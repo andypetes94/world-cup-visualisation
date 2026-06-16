@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+// Public-folder assets are referenced with a root-relative path (e.g. '/players/x.jpg'),
+// which needs the configured base prepended when the site is deployed under a sub-path.
+const assetUrl = path => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+
 // ── Shared palette ────────────────────────────────────────────────────────────
 const INK = {
   Portugal:  '#8b0020',
@@ -409,7 +413,7 @@ export default function StateViz() {
               {/* Player photo */}
               {player && (
                 <image
-                  href={player.photo}
+                  href={assetUrl(player.photo)}
                   x={cx - R_PHOTO} y={cy - R_PHOTO - R_PHOTO * 0.12}
                   width={R_PHOTO * 2} height={R_PHOTO * 2 * 1.25}
                   clipPath={`url(#${clipId})`}

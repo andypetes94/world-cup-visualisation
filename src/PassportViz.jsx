@@ -4,6 +4,10 @@ import { geoNaturalEarth1, geoPath, geoGraticule } from 'd3-geo'
 import { feature } from 'topojson-client'
 import worldData from 'world-atlas/countries-110m.json'
 
+// Public-folder assets are referenced with a root-relative path (e.g. '/players/x.jpg'),
+// which needs the configured base prepended when the site is deployed under a sub-path.
+const assetUrl = path => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+
 // ── Dimensions ────────────────────────────────────────────────────────────────
 const W = 1200, H = 900
 const cx = W / 2, cy = H / 2 + 10
@@ -271,7 +275,7 @@ function Stamp({ player, x, y, w, faded, isHovered, onEnter, onLeave, notSelecte
 
       {/* Shift image slightly down within clip so face is better centred */}
       <image
-        href={player.photo}
+        href={assetUrl(player.photo)}
         x={iX} y={iY - pH * 0.12}
         width={iW} height={pH * 1.24}
         clipPath={`url(#${clipId})`}
@@ -403,7 +407,7 @@ function PlayerTooltip({ player, screenX, screenY }) {
       </div>
 
       {/* Photo */}
-      <img src={player.photo} alt={player.name} style={{
+      <img src={assetUrl(player.photo)} alt={player.name} style={{
         width: '100%', height: 190, objectFit: 'cover',
         objectPosition: 'center 18%', display: 'block',
         filter: rejected ? 'grayscale(1)' : 'none',
