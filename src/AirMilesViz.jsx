@@ -21,6 +21,13 @@ const NA_COLLECTION = { type: 'FeatureCollection', features: NA_FEATURES }
 // every host city into one corner. The land mass still renders at full extent and
 // is simply clipped to the visible map frame.
 const VENUE_POINTS = { type: 'Feature', geometry: { type: 'MultiPoint', coordinates: Object.values(VENUES).map(v => [v.lon, v.lat]) } }
+
+// Per-venue label overrides — offsets from dot centre; omit to use default (centred 16px above)
+const LABEL_POS = {
+  MET:  { dx: -20, dy: 4,  anchor: 'end'    },  // New York → left of dot
+  LIN:  { dx: 0,   dy: 22, anchor: 'middle' },  // Philadelphia → below dot
+  // Boston stays default (above) — northernmost, has clear space
+}
 const MAP_PROJECTION = geoMercator().fitExtent([[PAD, PAD], [MAP_W - PAD, MAP_H - PAD]], VENUE_POINTS)
 const mapPathGen = geoPath(MAP_PROJECTION)
 const NA_PATH = mapPathGen(NA_COLLECTION)
@@ -287,20 +294,28 @@ export default function AirMilesViz() {
                     else trackVenueMouse(e, id)
                   }}
                   style={{ cursor: 'pointer' }}>
-                  <circle cx={x} cy={y} r={10} fill="transparent" />
-                  <circle cx={x} cy={y} r={isVenueHov ? 8 : (active ? 6.5 : 4.5)}
+                  <circle cx={x} cy={y} r={16} fill="transparent" />
+                  <circle cx={x} cy={y} r={isVenueHov ? 14 : (active ? 11 : 8)}
                     fill={active ? (hoveredRow ? POS_COLOR[hoveredRow.position] : '#9a8870') : '#c9a05c'}
-                    stroke="#fdfaf4" strokeWidth={1.2}
+                    stroke="#fdfaf4" strokeWidth={1.8}
                     opacity={isVenueHov ? 1 : (hoveredRow ? (active ? 1 : 0.3) : 0.9)}
                     style={{ transition: 'opacity 0.15s, r 0.15s' }} />
-                  <text x={x} y={y - 9} textAnchor="middle"
-                    fontSize={8} fontWeight={active || isVenueHov ? 700 : 500}
-                    fontFamily="'DM Sans', system-ui, sans-serif"
-                    fill={active || isVenueHov ? '#2d2410' : '#9a8870'}
-                    opacity={isVenueHov ? 1 : (hoveredRow ? (active ? 1 : 0.3) : 0.75)}
-                    style={{ transition: 'opacity 0.15s' }}>
-                    {v.city}
-                  </text>
+                  {(() => {
+                    const lo = LABEL_POS[id]
+                    const lx = x + (lo?.dx ?? 0)
+                    const ly = lo ? y + lo.dy : y - 16
+                    const la = lo?.anchor ?? 'middle'
+                    return (
+                      <text x={lx} y={ly} textAnchor={la}
+                        fontSize={14} fontWeight={active || isVenueHov ? 700 : 500}
+                        fontFamily="'DM Sans', system-ui, sans-serif"
+                        fill={active || isVenueHov ? '#2d2410' : '#9a8870'}
+                        opacity={isVenueHov ? 1 : (hoveredRow ? (active ? 1 : 0.3) : 0.75)}
+                        style={{ transition: 'opacity 0.15s' }}>
+                        {v.city}
+                      </text>
+                    )
+                  })()}
                 </g>
               )
             })}
@@ -407,10 +422,10 @@ export default function AirMilesViz() {
                         fontFamily: "'DM Sans', system-ui, sans-serif",
                       }}>NYC</span>
                     </div>
-                    {/* min–max range band — fades like a contrail toward the longer journey */}
+                    {/* min–max range band — fades like a contrail from start toward the longer journey */}
                     <div style={{
                       position: 'absolute', top: '50%', height: 4, transform: 'translateY(-50%)',
-                      left: `${minPct}%`, width: `${Math.max(maxPct - minPct, 0.5)}%`,
+                      left: 0, width: `${maxPct}%`,
                       background: `linear-gradient(90deg, transparent, ${POS_COLOR[r.position]})`,
                       opacity: isRowHov ? 0.5 : 0.3, borderRadius: 2,
                     }} />

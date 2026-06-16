@@ -461,8 +461,20 @@ export default function ConfederationViz() {
                     x={colX} y={b.y} width={BLOCK_W} height={BLOCK_H} rx={1.5}
                     fill={b.color}
                     opacity={active ? 0.88 : 0.1}
-                    style={{ transition: 'opacity 0.18s', cursor: 'pointer' }}
-                    onMouseEnter={showTooltip(d.year, b.conf)}
+                    style={{ transition: 'opacity 0.18s', pointerEvents: 'none' }} />
+                )
+              })}
+
+              {/* Transparent hit areas per confederation section — bridge the inter-block gaps */}
+              {CONFS.map(c => {
+                const sec = SECTION_POS[ci][c.key]
+                if (!sec) return null
+                return (
+                  <rect key={`hit-${c.key}`}
+                    x={colX} y={sec.topY - 2} width={BLOCK_W} height={sec.bottomY - sec.topY + 4}
+                    fill="transparent"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={showTooltip(d.year, c.key)}
                     onMouseMove={moveTooltip}
                     onMouseLeave={hideTooltip} />
                 )
