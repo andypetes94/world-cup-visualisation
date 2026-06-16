@@ -207,7 +207,7 @@ function Perforations({ x, y, w, h }) {
 }
 
 // ── Stamp ─────────────────────────────────────────────────────────────────────
-function Stamp({ player, x, y, w, faded, isHovered, onEnter, onLeave, notSelected }) {
+function Stamp({ player, x, y, w, faded, isHovered, onEnter, onLeave, onClick, notSelected }) {
   const h      = w * 1.45
   const color  = ink(player.country)
   const rx     = 7
@@ -242,6 +242,7 @@ function Stamp({ player, x, y, w, faded, isHovered, onEnter, onLeave, notSelecte
     <g
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
+      onClick={onClick}
       opacity={notSelected ? (faded ? 0.12 : 0.42) : (faded ? 0.25 : 1)}
       style={{
         cursor: 'pointer',
@@ -365,11 +366,11 @@ function PlayerTooltip({ player, screenX, screenY }) {
   const rejected = isSidelined(player.name)
   const label    = sidelineLabel(player.name)
   const isMobile = window.innerWidth < 640
-  const width    = isMobile ? 188 : 260
-  const photoH   = isMobile ? 120 : 190
+  const width    = isMobile ? 148 : 260
+  const photoH   = isMobile ? 90 : 190
   const toLeft   = screenX > window.innerWidth * 0.58
   const left     = toLeft ? screenX - width - 24 : screenX + 24
-  const top      = Math.max(10, Math.min(screenY - 160, window.innerHeight - (isMobile ? 330 : 460)))
+  const top      = Math.max(10, Math.min(screenY - 160, window.innerHeight - (isMobile ? 260 : 460)))
 
   const statRow = [
     { label: 'Age at WC',  value: player.age },
@@ -391,20 +392,20 @@ function PlayerTooltip({ player, screenX, screenY }) {
       <div style={{ height: 4, background: color }} />
 
       {/* Header */}
-      <div style={{ padding: isMobile ? '8px 11px 7px' : '11px 15px 9px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-        <div style={{ fontSize: isMobile ? 8 : 9.5, color, fontWeight: 700, letterSpacing: '0.13em',
-          textTransform: 'uppercase', marginBottom: 5 }}>
+      <div style={{ padding: isMobile ? '6px 8px 5px' : '11px 15px 9px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+        <div style={{ fontSize: isMobile ? 6.5 : 9.5, color, fontWeight: 700, letterSpacing: '0.13em',
+          textTransform: 'uppercase', marginBottom: 4 }}>
           Rank #{player.rank} · {player.country}
           {rejected && <span style={{ marginLeft: 8, background: '#8b1a1a', color: '#fff',
-            padding: '1px 6px', borderRadius: 2, fontSize: 8.5, letterSpacing: '0.1em' }}>
+            padding: '1px 6px', borderRadius: 2, fontSize: isMobile ? 7 : 8.5, letterSpacing: '0.1em' }}>
             {label}
           </span>}
         </div>
-        <div style={{ fontSize: isMobile ? 14.5 : 19, fontWeight: 700, color: '#14100b',
+        <div style={{ fontSize: isMobile ? 11.5 : 19, fontWeight: 700, color: '#14100b',
           lineHeight: 1.1, letterSpacing: '0.01em' }}>
           {player.name}
         </div>
-        <div style={{ fontSize: isMobile ? 9.5 : 11, color: '#7a6e60', marginTop: 4 }}>
+        <div style={{ fontSize: isMobile ? 8 : 11, color: '#7a6e60', marginTop: 3 }}>
           {player.position}&ensp;·&ensp;{player.club}
         </div>
       </div>
@@ -417,23 +418,23 @@ function PlayerTooltip({ player, screenX, screenY }) {
       }} />
 
       {/* Stats grid */}
-      <div style={{ padding: isMobile ? '9px 11px 10px' : '12px 15px 14px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isMobile ? '7px 10px' : '10px 14px' }}>
+      <div style={{ padding: isMobile ? '6px 8px 7px' : '12px 15px 14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isMobile ? '5px 6px' : '10px 14px' }}>
           {statRow.map(({ label, value }) => (
             <div key={label}>
-              <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
+              <div style={{ fontSize: isMobile ? 6.5 : 9, color: '#9a8870', textTransform: 'uppercase',
                 letterSpacing: '0.09em', marginBottom: 2 }}>{label}</div>
-              <div style={{ fontSize: isMobile ? 13 : 16, fontWeight: 600, color: '#14100b' }}>{value}</div>
+              <div style={{ fontSize: isMobile ? 10.5 : 16, fontWeight: 600, color: '#14100b' }}>{value}</div>
             </div>
           ))}
         </div>
 
         {/* Popularity score + raw views */}
-        <div style={{ marginTop: isMobile ? 8 : 11, paddingTop: isMobile ? 7 : 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-          <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
+        <div style={{ marginTop: isMobile ? 6 : 11, paddingTop: isMobile ? 5 : 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+          <div style={{ fontSize: isMobile ? 6.5 : 9, color: '#9a8870', textTransform: 'uppercase',
             letterSpacing: '0.09em', marginBottom: 2 }}>Wikipedia Interest Score</div>
-          <div style={{ fontSize: isMobile ? 13 : 16, fontWeight: 600, color }}>{player.score.toFixed(1)} / 100</div>
-          <div style={{ fontSize: isMobile ? 8.5 : 10, color: '#9a8870', marginTop: 2 }}>
+          <div style={{ fontSize: isMobile ? 10.5 : 16, fontWeight: 600, color }}>{player.score.toFixed(1)} / 100</div>
+          <div style={{ fontSize: isMobile ? 7 : 10, color: '#9a8870', marginTop: 2 }}>
             {player.wikiViews.toLocaleString()} page views (Jan – Jun 2026)
           </div>
         </div>
@@ -487,26 +488,26 @@ function PassportBackground() {
 function CentreTitle() {
   return (
     <>
-      {/* "THE ROAD TO" */}
-      <text x={cx} y={cy - 88} textAnchor="middle"
+      {/* "THE ROAD TO" — nudged higher to make room for the larger title below */}
+      <text x={cx} y={cy - 120} textAnchor="middle"
         fill="#1a1208"
         fontSize="14" fontWeight="600" letterSpacing="5"
         fontFamily="'Raleway', system-ui, sans-serif">
         THE ROAD TO
       </text>
 
-      {/* "WORLD CUP" */}
-      <text x={cx} y={cy - 42} textAnchor="middle"
+      {/* "WORLD CUP" — matches the chart-title size used across the other charts */}
+      <text x={cx} y={cy - 58} textAnchor="middle"
         fill="#1a1208"
-        fontSize="44" fontWeight="700" letterSpacing="2"
+        fontSize="64" fontWeight="700" letterSpacing="2"
         fontFamily="'Raleway', system-ui, sans-serif">
         WORLD CUP
       </text>
 
       {/* "2026" */}
-      <text x={cx} y={cy + 18} textAnchor="middle"
+      <text x={cx} y={cy} textAnchor="middle"
         fill="#1a1208"
-        fontSize="60" fontWeight="800" letterSpacing="5"
+        fontSize="64" fontWeight="700" letterSpacing="2"
         fontFamily="'Raleway', system-ui, sans-serif">
         2026
       </text>
@@ -514,25 +515,25 @@ function CentreTitle() {
       {/* Subtitle */}
       <text x={cx} y={cy + 38} textAnchor="middle"
         fill="#1a1208"
-        fontSize="11.5" fontWeight="300"
+        fontSize="20" fontWeight="300"
         fontFamily="'Raleway', system-ui, sans-serif">
         Most talked-about players
       </text>
-      <text x={cx} y={cy + 54} textAnchor="middle"
+      <text x={cx} y={cy + 64} textAnchor="middle"
         fill="#1a1208"
-        fontSize="11.5" fontWeight="300"
+        fontSize="20" fontWeight="300"
         fontFamily="'Raleway', system-ui, sans-serif">
         ahead of the 2026 FIFA World Cup™
       </text>
 
       {/* Separator */}
-      <line x1={cx - 90} y1={cy + 68} x2={cx + 90} y2={cy + 68}
+      <line x1={cx - 90} y1={cy + 76} x2={cx + 90} y2={cy + 76}
         stroke="rgba(30,18,4,0.25)" strokeWidth="0.75" />
 
       {/* Data note */}
-      <text x={cx} y={cy + 83} textAnchor="middle"
+      <text x={cx} y={cy + 94} textAnchor="middle"
         fill="#5a4220"
-        fontSize="9.5" fontStyle="italic" fontWeight="300"
+        fontSize="14" fontWeight="300"
         fontFamily="'Raleway', system-ui, sans-serif">
         Stamp size scaled by Wikipedia page views
       </text>
@@ -565,6 +566,16 @@ export default function PassportViz() {
     setHovered(null)
     setTooltip(null)
   }
+  const handleClick = (player) => (e) => {
+    e.stopPropagation()
+    if (hovered === player.rank) {
+      setHovered(null)
+      setTooltip(null)
+    } else {
+      setHovered(player.rank)
+      setTooltip({ player, x: e.clientX, y: e.clientY })
+    }
+  }
 
   const n = PLAYERS.length
   const placed = PLAYERS.map((p, i) => {
@@ -575,7 +586,13 @@ export default function PassportViz() {
   })
 
   return (
-    <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}>
+    <div style={{
+      width: '100%',
+      // Fill as much of the viewport height as possible (no chart-header sibling
+      // here, so the only reserved space is the fixed nav bar + a small buffer).
+      maxWidth: `min(1200px, calc((100vh - 100px) * ${(W / H).toFixed(3)}))`,
+      margin: '0 auto',
+    }} onClick={handleLeave}>
       <style>{`
         @keyframes stampRectRipple {
           from { transform: scale(1);    opacity: 0.6; }
@@ -613,6 +630,7 @@ export default function PassportViz() {
               notSelected={isSidelined(p.name)}
               onEnter={handleEnter(p)}
               onLeave={handleLeave}
+              onClick={handleClick(p)}
             />
           ))}
 
@@ -627,14 +645,6 @@ export default function PassportViz() {
       {tooltip && (
         <PlayerTooltip player={tooltip.player} screenX={tooltip.x} screenY={tooltip.y} />
       )}
-
-      <p style={{
-        textAlign: 'center', marginTop: 10,
-        fontSize: 10.5, color: '#9a8c7a', letterSpacing: '0.06em',
-        fontFamily: 'Raleway, sans-serif',
-      }}>
-        Scores: Wikipedia English page views Jan–Jun 2026, normalised to Ronaldo = 100. Source: Wikimedia REST API. Photos: Wikimedia Commons (CC BY-SA).
-      </p>
     </div>
   )
 }

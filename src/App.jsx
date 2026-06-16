@@ -30,6 +30,60 @@ function PitchRings() {
   )
 }
 
+/* Decorative corner motifs — line-art football iconography framing the hero */
+function HeroMotifs() {
+  return (
+    <div className="hero-motifs" aria-hidden="true">
+      {/* Corner flag — top left */}
+      <svg className="hero-motif hero-motif--tl" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="30" y1="140" x2="30" y2="20" stroke="#2e2820" strokeWidth="1.5" />
+        <path d="M 30 20 L 100 38 L 30 56 Z" stroke="#2e2820" strokeWidth="1.2" fill="none" />
+        <circle cx="30" cy="146" r="6" stroke="#2e2820" strokeWidth="1" />
+        <path d="M 6 146 A 24 24 0 0 1 54 146" stroke="#2e2820" strokeWidth="0.75" />
+      </svg>
+
+      {/* Football — top right */}
+      <svg className="hero-motif hero-motif--tr" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80" cy="80" r="54" stroke="#2e2820" strokeWidth="1.2" />
+        <path d="M80 35 L101 51 L93 79 L67 79 L59 51 Z" stroke="#2e2820" strokeWidth="1" />
+        <path d="M80 35 L80 22 M101 51 L124 45 M93 79 L110 99 M67 79 L50 99 M59 51 L36 45"
+          stroke="#2e2820" strokeWidth="0.75" />
+      </svg>
+
+      {/* Goalposts — bottom left */}
+      <svg className="hero-motif hero-motif--bl" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 140 L20 28 L130 28 L130 140" stroke="#2e2820" strokeWidth="1.5" />
+        {[44, 68, 92, 116].map(x => (
+          <line key={x} x1={x} y1="28" x2={x - 10} y2="140" stroke="#2e2820" strokeWidth="0.5" />
+        ))}
+        {[56, 84, 112].map(y => (
+          <line key={y} x1="20" y1={y} x2="130" y2={y} stroke="#2e2820" strokeWidth="0.5" />
+        ))}
+      </svg>
+
+      {/* Trophy — bottom right */}
+      <svg className="hero-motif hero-motif--br" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M55 30 H105 V54 C105 80 92 92 80 92 C68 92 55 80 55 54 Z" stroke="#2e2820" strokeWidth="1.2" />
+        <path d="M55 36 C38 36 33 54 52 60" stroke="#2e2820" strokeWidth="1" />
+        <path d="M105 36 C122 36 127 54 108 60" stroke="#2e2820" strokeWidth="1" />
+        <rect x="72" y="92" width="16" height="14" stroke="#2e2820" strokeWidth="1" />
+        <path d="M58 118 H102" stroke="#2e2820" strokeWidth="1.5" />
+        <path d="M64 118 L72 106 M96 118 L88 106" stroke="#2e2820" strokeWidth="0.75" />
+      </svg>
+    </div>
+  )
+}
+
+const SITE_URL   = 'https://andypetes94.github.io/world-cup-visualisation/'
+const SHARE_TEXT = 'Before the Whistle — a data portrait of the 2026 World Cup'
+
+const SHARE_LINKS = [
+  { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SITE_URL)}` },
+  { label: 'Bluesky',  href: `https://bsky.app/intent/compose?text=${encodeURIComponent(`${SHARE_TEXT} ${SITE_URL}`)}` },
+  { label: 'X',        href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(SITE_URL)}&text=${encodeURIComponent(SHARE_TEXT)}` },
+  { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}` },
+]
+
 function SectionDivider() {
   return (
     <div className="divider container" aria-hidden="true">
@@ -60,7 +114,7 @@ export default function App() {
     <>
       {/* ── Navigation ── */}
       <nav className="site-nav">
-        <span className="nav-brand">WC · 2026</span>
+        <span className="nav-brand">World Cup 2026</span>
         <button
           className={`nav-burger${navOpen ? ' nav-burger--open' : ''}`}
           aria-label={navOpen ? 'Close menu' : 'Open menu'}
@@ -81,9 +135,10 @@ export default function App() {
       {/* ── Hero ── */}
       <section className="hero">
         <PitchRings />
+        <HeroMotifs />
         <div className="hero-content">
           <span className="hero-eyebrow">FIFA World Cup</span>
-          <p className="hero-year">2026</p>
+          <p className="hero-year">World Cup 2026</p>
           <h1 className="hero-title">Before the Whistle</h1>
           <p className="hero-tagline">
             The world's biggest sporting event is coming to North America. Before a
@@ -97,6 +152,7 @@ export default function App() {
             <span className="hero-meta-sep">·</span>
             <span>48 Teams &nbsp;·&nbsp; 104 Matches</span>
           </div>
+          <p className="hero-byline">Concept, analysis, design, and development by Andrew Peters</p>
         </div>
         <div className="hero-scroll" aria-label="Scroll to continue">
           <div className="hero-scroll-line" />
@@ -178,7 +234,7 @@ export default function App() {
 
           <PassportViz />
           <p className="chapter-annotation">
-            Wikipedia English page views, January – June 2026 · Normalised to Ronaldo = 100 · Stamp size reflects interest score · Source: Wikimedia REST API
+            Wikipedia English page views, January – June 2026 · Normalised to Ronaldo = 100 · Stamp size reflects interest score · Source: Wikimedia REST API · Photos: Wikimedia Commons (CC BY-SA)
           </p>
         </div>
       </section>
@@ -296,7 +352,7 @@ export default function App() {
           <TicketViz />
           <p className="chapter-annotation">
             *Does not include discounted tickets offered to residents of host countries, or those resold ·
-            Sources: WorldCupGuide.com; FIFA · 2026 values confirmed by The Economist (May 2026) · Hover a line to isolate a year
+            Face value, cheapest category, USD · Sources: WorldCupGuide.com; FIFA · 2026 values confirmed by The Economist (May 2026); pre-2026 years estimated · Hover a line to isolate a year
           </p>
         </div>
       </section>
@@ -347,7 +403,7 @@ export default function App() {
 
           <ConfederationViz />
           <p className="chapter-annotation">
-            Source: FIFA · Confederation berths per tournament · Hover a block or legend item to isolate a region across all years
+            Source: FIFA · Confederation berths per tournament · Hover a block to see countries and FIFA world ranking that year, or a legend item to isolate a region across all years
           </p>
         </div>
       </section>
@@ -392,19 +448,24 @@ export default function App() {
               different routes to get there.
             </p>
             <p>
-              Because the knockout bracket slot is fixed long before the draw
-              produces real opponents, that half of the journey can be mapped in
-              advance for any "Group A Winner" label. The group stage can't be —
-              so each bar below shows all four teams that could occupy a given
+              Because the knockout bracket is fixed long before the draw
+              of actual qualiying teams, that half of the journey can be mapped in
+              advance, for example, any "Group A Winner" or "Group B Runner-up". 
+              However, the outcome of said groups can't be knownin advance, so each 
+              bar below shows all four teams that could occupy a given
               finishing position, group stage included. Third-place qualifiers add
-              one more wrinkle: under the 2026 rules there are no lots, so a
+              one more caveat: a
               third-place finisher's knockout entry point depends on how the seven
               other qualifying third-place teams rank, meaning some groups carry a
-              handful of possible routes, not one.
+              handful of possible routes, not just one! I tried my best to visualise
+              the possibilities below!
             </p>
           </div>
 
           <AirMilesViz />
+          <p className="chapter-annotation">
+            Source: FIFA · Distances are great-circle (straight-line) between host stadiums, group stage through the Final, with arrows marking each leg's direction of travel · Hover a row for all 4 candidate teams, a dot for one team's full route, or a venue on the map for stadium capacity and hosted rounds
+          </p>
         </div>
       </section>
 
@@ -430,11 +491,27 @@ export default function App() {
         </div>
       </section>
 
+      {/* ── Share ── */}
+      <section className="share-section">
+        <div className="container--narrow share-inner">
+          <p className="share-title">Share the Story</p>
+          <p className="share-sub">If this gave you a new way to look at the World Cup, pass it along.</p>
+          <div className="share-buttons">
+            {SHARE_LINKS.map(({ label, href }) => (
+              <a key={label} className="share-btn" href={href} target="_blank" rel="noopener noreferrer">
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Footer ── */}
       <footer className="site-footer">
         <div className="footer-inner">
           <div>
             <p className="footer-title">World Cup 2026 — Before the Whistle</p>
+            <p className="footer-byline">By Andrew Peters</p>
             <p className="footer-sub">
               An independent data project exploring global football interest ahead of
               the 2026 FIFA World Cup. All data sourced from publicly available records.

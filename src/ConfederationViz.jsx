@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 
 const W = 1200, H = 660
+const DISPLAY_W = 1350   // rendered slightly wider than the viewBox so everything scales up a bit
 
 const BLOCK_W    = 70
 const BLOCK_H    = 9
@@ -324,7 +325,15 @@ export default function ConfederationViz() {
   const tooltipCountries = tooltip ? COUNTRY_DATA[tooltip.year]?.[tooltip.conf] : null
 
   return (
-    <div ref={containerRef} style={{ width: '100%', maxWidth: W, margin: '0 auto', position: 'relative' }}>
+    <div ref={containerRef} style={{
+      width: '100%',
+      // Cap by the larger of the two limits: the design width, or whatever width
+      // keeps (chart-header + SVG) from exceeding the viewport height — so the
+      // whole chart fits on screen on shorter laptop displays without scrolling,
+      // while the title/subtitle (vw-based, set elsewhere) stay the same size.
+      maxWidth: `min(${DISPLAY_W}px, calc((100vh - 220px) * ${(W / H).toFixed(3)}))`,
+      margin: '0 auto', position: 'relative',
+    }}>
       <div className="chart-header">
         <p className="chart-title">Europe&rsquo;s Shrinking Slice</p>
         <p className="chart-subtitle">Men&rsquo;s football World Cup team allocations by confederation · 1994–2026 · Each block = one team slot</p>
@@ -341,12 +350,12 @@ export default function ConfederationViz() {
               onMouseEnter={() => setHovConf(c.key)}
               onMouseLeave={() => setHovConf(null)}
               style={{ cursor: 'pointer' }}>
-              <rect x={lx} y={26} width={14} height={14} rx={2}
+              <rect x={lx} y={26} width={30} height={30} rx={2}
                 fill={c.color}
                 opacity={active ? 1 : 0.18}
                 style={{ transition: 'opacity 0.18s' }} />
-              <text x={lx + 20} y={38}
-                fontSize={11} fontWeight="500"
+              <text x={lx + 40} y={48}
+                fontSize={20} fontWeight="500"
                 fontFamily="'DM Sans', system-ui, sans-serif"
                 fill={active ? '#4a3828' : '#c0b0a0'}
                 style={{ transition: 'fill 0.18s' }}>
@@ -403,7 +412,7 @@ export default function ConfederationViz() {
                       <text
                         x={mx} y={(midB + midT) / 2 + 3}
                         textAnchor="middle"
-                        fontSize={10} fontWeight="700"
+                        fontSize={16} fontWeight="700"
                         fontFamily="'DM Sans', system-ui, sans-serif"
                         fill="white"
                         style={{ pointerEvents: 'none' }}>
@@ -471,16 +480,16 @@ export default function ConfederationViz() {
               )}
 
               {/* Year label */}
-              <text x={colCX} y={BASELINE_Y + 19} textAnchor="middle"
-                fontSize={is26 ? 15 : 13.5} fontWeight={is26 ? '700' : '600'}
+              <text x={colCX} y={BASELINE_Y + 25} textAnchor="middle"
+                fontSize={is26 ? 30 : 26} fontWeight={is26 ? '700' : '600'}
                 fontFamily="'Raleway', system-ui, sans-serif"
                 fill={is26 ? '#14100b' : '#4a3828'}>
                 {d.year}
               </text>
 
               {/* Team count */}
-              <text x={colCX} y={BASELINE_Y + 33} textAnchor="middle"
-                fontSize={11} fontFamily="'DM Sans', system-ui, sans-serif"
+              <text x={colCX} y={BASELINE_Y + 45} textAnchor="middle"
+                fontSize={18} fontFamily="'DM Sans', system-ui, sans-serif"
                 fill="#9a8870">
                 {total} teams
               </text>
@@ -488,13 +497,6 @@ export default function ConfederationViz() {
             </g>
           )
         })}
-
-        {/* ── Source note ── */}
-        <text x={W / 2} y={H - 14} textAnchor="middle"
-          fontSize={8.5} fontStyle="italic"
-          fontFamily="'DM Sans', system-ui, sans-serif" fill="#9a8870">
-          Source: FIFA · Confederation berths per tournament · Hover a block to see countries and FIFA world ranking at the start of that World Cup
-        </text>
 
       </svg>
 
@@ -508,25 +510,25 @@ export default function ConfederationViz() {
           border: '1px solid rgba(0,0,0,0.1)',
           borderRadius: 6,
           boxShadow: '0 6px 20px rgba(20,16,11,0.18)',
-          padding: '10px 14px',
-          minWidth: 170,
-          maxWidth: 210,
+          padding: '11px 16px',
+          minWidth: 190,
+          maxWidth: 235,
           pointerEvents: 'none',
           zIndex: 10,
         }}>
           <div style={{
             fontFamily: "'Raleway', system-ui, sans-serif",
-            fontWeight: 700, fontSize: 13,
-            color: '#2d2410', marginBottom: 6,
+            fontWeight: 700, fontSize: 14.5,
+            color: '#2d2410', marginBottom: 7,
           }}>
             {tooltip.conf} · {tooltip.year}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             {tooltipCountries.map(c => (
               <div key={c.name} style={{
-                display: 'flex', justifyContent: 'space-between', gap: 10,
+                display: 'flex', justifyContent: 'space-between', gap: 11,
                 fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: 11.5, color: '#4a3828',
+                fontSize: 13, color: '#4a3828',
               }}>
                 <span>
                   {c.name}
@@ -537,9 +539,9 @@ export default function ConfederationViz() {
             ))}
           </div>
           <div style={{
-            marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(0,0,0,0.08)',
+            marginTop: 7, paddingTop: 7, borderTop: '1px solid rgba(0,0,0,0.08)',
             fontFamily: "'DM Sans', system-ui, sans-serif",
-            fontSize: 9.5, color: '#9a8870', fontStyle: 'italic',
+            fontSize: 10.5, color: '#9a8870', fontStyle: 'italic',
           }}>
             # = FIFA world ranking<br />★ tournament debut
           </div>

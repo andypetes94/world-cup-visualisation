@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-const W = 1200, H = 590
-const TOP_Y = 115, ROW_H = 54   // 8 rows × 54 = 432 → fills same canvas
+const W = 1200, H = 620
+const DISPLAY_W = 1680   // rendered wider than the viewBox so every element scales up proportionally (legibility/accessibility)
+const TOP_Y = 115, ROW_H = 62   // 8 rows × 62 → taller rows to fit the thicker (45px) bars without crowding
 
 const L_SPINE = 410   // left bars' right edge
 const C_MID   = 600   // centre pill midpoint
@@ -52,7 +53,15 @@ export default function TicketViz() {
   const off = ()  => setHov(null)
 
   return (
-    <div style={{ width: '100%', maxWidth: W, margin: '0 auto' }}>
+    <div style={{
+      width: '100%',
+      // Cap by the larger of the two limits: the design width, or whatever width
+      // keeps (chart-header + SVG) from exceeding the viewport height — so the
+      // whole chart fits on screen on shorter laptop displays without scrolling,
+      // while the title/subtitle (vw-based, set elsewhere) stay the same size.
+      maxWidth: `min(${DISPLAY_W}px, calc((100vh - 220px) * ${(W / H).toFixed(3)}))`,
+      margin: '0 auto',
+    }}>
       <div className="chart-header">
         <p className="chart-title">Priced Out of Paradise</p>
         <p className="chart-subtitle">Men&rsquo;s football World Cup, cheapest tickets*, $, 2026 prices</p>
@@ -90,12 +99,12 @@ export default function TicketViz() {
         ].map(({ x, anchor, title, sub }) => (
           <g key={title}>
             <text x={x} y={42} textAnchor={anchor}
-              fontSize="19" fontWeight="700"
+              fontSize="32" fontWeight="700"
               fontFamily="'Raleway', system-ui, sans-serif" fill="#14100b">
               {title}
             </text>
-            <text x={x} y={60} textAnchor={anchor}
-              fontSize="10" fontFamily="'DM Sans', system-ui, sans-serif" fill="#9a8870">
+            <text x={x} y={70} textAnchor={anchor}
+              fontSize="20" fontFamily="'DM Sans', system-ui, sans-serif" fill="#9a8870">
               {sub}
             </text>
           </g>
@@ -103,7 +112,7 @@ export default function TicketViz() {
 
         {/* Spine hairlines */}
         {[L_SPINE, R_SPINE].map(x => (
-          <line key={x} x1={x} y1={74} x2={x} y2={TOP_Y + 7 * ROW_H + 30}
+          <line key={x} x1={x} y1={84} x2={x} y2={TOP_Y + 7 * ROW_H + 30}
             stroke="rgba(0,0,0,0.07)" strokeWidth="1" />
         ))}
 
@@ -119,7 +128,7 @@ export default function TicketViz() {
           const active = !hov || hov === d.year
           const isHov  = hov === d.year
           const op  = hov ? (active ? 0.9 : 0.05) : (is26 ? 0.82 : 0.38)
-          const sw  = (hov && active) ? 3.5 : is26 ? 3 : 2.5
+          const sw  = (hov && active) ? 10.5 : is26 ? 8.5 : 8
           return (
             <g key={d.year} onMouseEnter={on(d.year)} onMouseLeave={off}
               style={{ cursor: 'pointer' }}>
@@ -142,34 +151,34 @@ export default function TicketViz() {
           return (
             <g key={d.year} onMouseEnter={on(d.year)} onMouseLeave={off}
               style={{ cursor: 'pointer' }}>
-              <rect x={L_SPINE - bw} y={y - 9} width={bw} height={18} rx={3}
+              <rect x={L_SPINE - bw} y={y - 22.5} width={bw} height={45} rx={4}
                 fill={d.color} opacity={fd * 0.88}
                 style={{ transition: 'opacity 0.15s' }} />
-              {bw > 44 ? (
+              {bw > 56 ? (
                 /* Wide enough — white text inside bar */
-                <text x={L_SPINE - 5} y={y + 4.5} textAnchor="end"
-                  fontSize={is26 ? 11 : 9.5} fontWeight="600"
+                <text x={L_SPINE - 7} y={y + 5} textAnchor="end"
+                  fontSize={is26 ? 13.5 : 12} fontWeight="600"
                   fontFamily="'DM Sans', system-ui, sans-serif" fill="white"
                   opacity={fd * 0.92} style={{ transition: 'opacity 0.15s' }}>
                   {fmtGroup(d.group)}
                 </text>
               ) : (
                 /* Bar too short — coloured text nudged left of bar */
-                <text x={L_SPINE - bw - 5} y={y + 4.5} textAnchor="end"
-                  fontSize={9.5} fontWeight="600"
+                <text x={L_SPINE - bw - 7} y={y + 5} textAnchor="end"
+                  fontSize={12} fontWeight="600"
                   fontFamily="'DM Sans', system-ui, sans-serif" fill={d.color}
                   opacity={fd * 0.92} style={{ transition: 'opacity 0.15s' }}>
                   {fmtGroup(d.group)}
                 </text>
               )}
-              <text x={18} y={y - 1}
-                fontSize={is26 ? 14 : 13} fontWeight={is26 ? '700' : '500'}
+              <text x={18} y={y - 5}
+                fontSize={is26 ? 16 : 15} fontWeight={is26 ? '700' : '500'}
                 fontFamily="'Raleway', system-ui, sans-serif"
                 fill={(hov === d.year || is26) ? d.color : '#4a3828'}
                 opacity={fd} style={{ transition: 'opacity 0.15s, fill 0.12s' }}>
                 {d.year}
               </text>
-              <text x={18} y={y + 13} fontSize={11}
+              <text x={18} y={y + 14} fontSize={12.5}
                 fontFamily="'DM Sans', system-ui, sans-serif"
                 fill="#9a8870" opacity={fd * 0.82}
                 style={{ transition: 'opacity 0.15s' }}>
@@ -188,11 +197,11 @@ export default function TicketViz() {
           return (
             <g key={d.year} onMouseEnter={on(d.year)} onMouseLeave={off}
               style={{ cursor: 'pointer' }}>
-              <rect x={C_MID - w / 2} y={y - 10} width={w} height={20} rx={5}
+              <rect x={C_MID - w / 2} y={y - 14} width={w} height={28} rx={7}
                 fill={d.color} opacity={0.95}
                 className={hov === d.year ? 'pill-active' : ''} />
-              <text x={C_MID} y={y + 4} textAnchor="middle"
-                fontSize={is26 ? 12 : 10.5} fontWeight="700"
+              <text x={C_MID} y={y + 5} textAnchor="middle"
+                fontSize={is26 ? 14 : 12.5} fontWeight="700"
                 fontFamily="'DM Sans', system-ui, sans-serif" fill="white"
                 opacity={1}>
                 {d.ratio.toFixed(1)}×
@@ -210,34 +219,34 @@ export default function TicketViz() {
           return (
             <g key={d.year} onMouseEnter={on(d.year)} onMouseLeave={off}
               style={{ cursor: 'pointer' }}>
-              <rect x={R_SPINE} y={y - 9} width={bw} height={18} rx={3}
+              <rect x={R_SPINE} y={y - 22.5} width={bw} height={45} rx={4}
                 fill={d.color} opacity={fd * 0.88}
                 style={{ transition: 'opacity 0.15s' }} />
-              {bw > 44 ? (
+              {bw > 56 ? (
                 /* Wide enough — white text inside bar */
-                <text x={R_SPINE + 5} y={y + 4.5} textAnchor="start"
-                  fontSize={is26 ? 11 : 9.5} fontWeight="600"
+                <text x={R_SPINE + 7} y={y + 5} textAnchor="start"
+                  fontSize={is26 ? 13.5 : 12} fontWeight="600"
                   fontFamily="'DM Sans', system-ui, sans-serif" fill="white"
                   opacity={fd * 0.92} style={{ transition: 'opacity 0.15s' }}>
                   {fmt(d.final)}
                 </text>
               ) : (
                 /* Bar too short — coloured text nudged right of bar */
-                <text x={R_SPINE + bw + 5} y={y + 4.5} textAnchor="start"
-                  fontSize={9.5} fontWeight="600"
+                <text x={R_SPINE + bw + 7} y={y + 5} textAnchor="start"
+                  fontSize={12} fontWeight="600"
                   fontFamily="'DM Sans', system-ui, sans-serif" fill={d.color}
                   opacity={fd * 0.92} style={{ transition: 'opacity 0.15s' }}>
                   {fmt(d.final)}
                 </text>
               )}
-              <text x={W - 18} y={y - 1} textAnchor="end"
-                fontSize={is26 ? 14 : 13} fontWeight={is26 ? '700' : '500'}
+              <text x={W - 18} y={y - 5} textAnchor="end"
+                fontSize={is26 ? 16 : 15} fontWeight={is26 ? '700' : '500'}
                 fontFamily="'Raleway', system-ui, sans-serif"
                 fill={(hov === d.year || is26) ? d.color : '#4a3828'}
                 opacity={fd} style={{ transition: 'opacity 0.15s, fill 0.12s' }}>
                 {d.year}
               </text>
-              <text x={W - 18} y={y + 13} textAnchor="end" fontSize={11}
+              <text x={W - 18} y={y + 14} textAnchor="end" fontSize={12.5}
                 fontFamily="'DM Sans', system-ui, sans-serif"
                 fill="#9a8870" opacity={fd * 0.82}
                 style={{ transition: 'opacity 0.15s' }}>
@@ -247,13 +256,6 @@ export default function TicketViz() {
           )
         })}
 
-        {/* ── Source note ───────────────────────────────────────────── */}
-        <text x={W / 2} y={H - 14} textAnchor="middle"
-          fontSize={8.5} fontStyle="italic"
-          fontFamily="'DM Sans', system-ui, sans-serif" fill="#9a8870">
-          Sources: WorldCupGuide.com; FIFA. Face value, cheapest category, USD.
-          2026 extracted from The Economist (May 2026). Pre-2026 years estimated. Hover a line to isolate.
-        </text>
       </svg>
     </div>
   )

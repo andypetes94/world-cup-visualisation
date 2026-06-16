@@ -45,58 +45,61 @@ const sidelineLabel = n => INJURED.has(n) ? 'INJURED' : 'NOT SELECTED'
 
 // ── US tile-cartogram grid ────────────────────────────────────────────────────
 // col/row positions replicate the "birds" schematic layout
+// col/row values derived from the reference site's actual grid data
+// (us_state_hex_locations.csv) — alternating rows are offset by half a column,
+// producing the same brick/staggered tile-grid look.
 const STATES = [
-  { name: 'Alaska',               label: 'ALASKA',        col: 0,  row: 0 },
-  { name: 'Maine',                label: 'MAINE',         col: 11, row: 0 },
-  { name: 'Vermont',              label: 'VERMONT',       col: 9,  row: 1 },
-  { name: 'New Hampshire',        label: 'NEW HAMPSHIRE', col: 10, row: 1 },
-  { name: 'Washington',           label: 'WASHINGTON',    col: 0,  row: 2 },
-  { name: 'Montana',              label: 'MONTANA',       col: 1,  row: 2 },
-  { name: 'North Dakota',         label: 'N. DAKOTA',     col: 2,  row: 2 },
-  { name: 'Minnesota',            label: 'MINNESOTA',     col: 3,  row: 2 },
-  { name: 'Wisconsin',            label: 'WISCONSIN',     col: 4,  row: 2 },
-  { name: 'Michigan',             label: 'MICHIGAN',      col: 6,  row: 2 },
-  { name: 'New York',             label: 'NEW YORK',      col: 8,  row: 2 },
-  { name: 'Massachusetts',        label: 'MASSACHUSETTS', col: 9,  row: 2 },
-  { name: 'Rhode Island',         label: 'RHODE ISLAND',  col: 10, row: 2 },
-  { name: 'Idaho',                label: 'IDAHO',         col: 1,  row: 3 },
-  { name: 'Wyoming',              label: 'WYOMING',       col: 2,  row: 3 },
-  { name: 'South Dakota',         label: 'S. DAKOTA',     col: 3,  row: 3 },
-  { name: 'Iowa',                 label: 'IOWA',          col: 4,  row: 3 },
-  { name: 'Illinois',             label: 'ILLINOIS',      col: 5,  row: 3 },
-  { name: 'Indiana',              label: 'INDIANA',       col: 6,  row: 3 },
-  { name: 'Ohio',                 label: 'OHIO',          col: 7,  row: 3 },
-  { name: 'Pennsylvania',         label: 'PENNSYLVANIA',  col: 8,  row: 3 },
-  { name: 'New Jersey',           label: 'NEW JERSEY',    col: 9,  row: 3 },
-  { name: 'Connecticut',          label: 'CONNECTICUT',   col: 10, row: 3 },
-  { name: 'Oregon',               label: 'OREGON',        col: 0,  row: 4 },
-  { name: 'Nevada',               label: 'NEVADA',        col: 1,  row: 4 },
-  { name: 'Colorado',             label: 'COLORADO',      col: 2,  row: 4 },
-  { name: 'Nebraska',             label: 'NEBRASKA',      col: 3,  row: 4 },
-  { name: 'Missouri',             label: 'MISSOURI',      col: 4,  row: 4 },
-  { name: 'Kentucky',             label: 'KENTUCKY',      col: 5,  row: 4 },
-  { name: 'West Virginia',        label: 'W. VIRGINIA',   col: 6,  row: 4 },
-  { name: 'Maryland',             label: 'MARYLAND',      col: 7,  row: 4 },
-  { name: 'Delaware',             label: 'DELAWARE',      col: 8,  row: 4 },
-  { name: 'California',           label: 'CALIFORNIA',    col: 0,  row: 5 },
-  { name: 'Arizona',              label: 'ARIZONA',       col: 1,  row: 5 },
-  { name: 'Utah',                 label: 'UTAH',          col: 2,  row: 5 },
-  { name: 'Kansas',               label: 'KANSAS',        col: 3,  row: 5 },
-  { name: 'Arkansas',             label: 'ARKANSAS',      col: 4,  row: 5 },
-  { name: 'Tennessee',            label: 'TENNESSEE',     col: 5,  row: 5 },
-  { name: 'Virginia',             label: 'VIRGINIA',      col: 6,  row: 5 },
-  { name: 'North Carolina',       label: 'N. CAROLINA',   col: 7,  row: 5 },
-  { name: 'District of Columbia', label: 'D.C.',          col: 9,  row: 5 },
-  { name: 'New Mexico',           label: 'NEW MEXICO',    col: 2,  row: 6 },
-  { name: 'Oklahoma',             label: 'OKLAHOMA',      col: 3,  row: 6 },
-  { name: 'Louisiana',            label: 'LOUISIANA',     col: 4,  row: 6 },
-  { name: 'Mississippi',          label: 'MISSISSIPPI',   col: 5,  row: 6 },
-  { name: 'Alabama',              label: 'ALABAMA',       col: 6,  row: 6 },
-  { name: 'South Carolina',       label: 'S. CAROLINA',   col: 7,  row: 6 },
-  { name: 'Texas',                label: 'TEXAS',         col: 3,  row: 7 },
-  { name: 'Georgia',              label: 'GEORGIA',       col: 7,  row: 7 },
-  { name: 'Hawaii',               label: 'HAWAII',        col: 0,  row: 8 },
-  { name: 'Florida',              label: 'FLORIDA',       col: 7,  row: 8 },
+  { name: 'Alaska',               label: 'ALASKA',        col: 0,    row: 0 },
+  { name: 'Maine',                label: 'MAINE',         col: 11,   row: 0 },
+  { name: 'Vermont',              label: 'VERMONT',       col: 9.5,  row: 1 },
+  { name: 'New Hampshire',        label: 'NEW HAMPSHIRE', col: 10.5, row: 1 },
+  { name: 'Washington',           label: 'WASHINGTON',    col: 1,    row: 2 },
+  { name: 'Montana',              label: 'MONTANA',       col: 2,    row: 2 },
+  { name: 'North Dakota',         label: 'N. DAKOTA',     col: 3,    row: 2 },
+  { name: 'Minnesota',            label: 'MINNESOTA',     col: 4,    row: 2 },
+  { name: 'Wisconsin',            label: 'WISCONSIN',     col: 5,    row: 2 },
+  { name: 'Michigan',             label: 'MICHIGAN',      col: 7,    row: 2 },
+  { name: 'New York',             label: 'NEW YORK',      col: 9,    row: 2 },
+  { name: 'Massachusetts',        label: 'MASSACHUSETTS', col: 10,   row: 2 },
+  { name: 'Rhode Island',         label: 'RHODE ISLAND',  col: 11,   row: 2 },
+  { name: 'Idaho',                label: 'IDAHO',         col: 1.5,  row: 3 },
+  { name: 'Wyoming',              label: 'WYOMING',       col: 2.5,  row: 3 },
+  { name: 'South Dakota',         label: 'S. DAKOTA',     col: 3.5,  row: 3 },
+  { name: 'Iowa',                 label: 'IOWA',          col: 4.5,  row: 3 },
+  { name: 'Illinois',             label: 'ILLINOIS',      col: 5.5,  row: 3 },
+  { name: 'Indiana',              label: 'INDIANA',       col: 6.5,  row: 3 },
+  { name: 'Ohio',                 label: 'OHIO',          col: 7.5,  row: 3 },
+  { name: 'Pennsylvania',         label: 'PENNSYLVANIA',  col: 8.5,  row: 3 },
+  { name: 'New Jersey',           label: 'NEW JERSEY',    col: 9.5,  row: 3 },
+  { name: 'Connecticut',          label: 'CONNECTICUT',   col: 10.5, row: 3 },
+  { name: 'Oregon',               label: 'OREGON',        col: 1,    row: 4 },
+  { name: 'Nevada',               label: 'NEVADA',        col: 2,    row: 4 },
+  { name: 'Colorado',             label: 'COLORADO',      col: 3,    row: 4 },
+  { name: 'Nebraska',             label: 'NEBRASKA',      col: 4,    row: 4 },
+  { name: 'Missouri',             label: 'MISSOURI',      col: 5,    row: 4 },
+  { name: 'Kentucky',             label: 'KENTUCKY',      col: 6,    row: 4 },
+  { name: 'West Virginia',        label: 'W. VIRGINIA',   col: 7,    row: 4 },
+  { name: 'Maryland',             label: 'MARYLAND',      col: 8,    row: 4 },
+  { name: 'Delaware',             label: 'DELAWARE',      col: 9,    row: 4 },
+  { name: 'California',           label: 'CALIFORNIA',    col: 1.5,  row: 5 },
+  { name: 'Arizona',              label: 'ARIZONA',       col: 2.5,  row: 5 },
+  { name: 'Utah',                 label: 'UTAH',          col: 3.5,  row: 5 },
+  { name: 'Kansas',               label: 'KANSAS',        col: 4.5,  row: 5 },
+  { name: 'Arkansas',             label: 'ARKANSAS',      col: 5.5,  row: 5 },
+  { name: 'Tennessee',            label: 'TENNESSEE',     col: 6.5,  row: 5 },
+  { name: 'Virginia',             label: 'VIRGINIA',      col: 7.5,  row: 5 },
+  { name: 'North Carolina',       label: 'N. CAROLINA',   col: 8.5,  row: 5 },
+  { name: 'District of Columbia', label: 'D.C.',          col: 10.5, row: 5 },
+  { name: 'New Mexico',           label: 'NEW MEXICO',    col: 3,    row: 6 },
+  { name: 'Oklahoma',             label: 'OKLAHOMA',      col: 4,    row: 6 },
+  { name: 'Louisiana',            label: 'LOUISIANA',     col: 5,    row: 6 },
+  { name: 'Mississippi',          label: 'MISSISSIPPI',   col: 6,    row: 6 },
+  { name: 'Alabama',              label: 'ALABAMA',       col: 7,    row: 6 },
+  { name: 'South Carolina',       label: 'S. CAROLINA',   col: 8,    row: 6 },
+  { name: 'Texas',                label: 'TEXAS',         col: 3.5,  row: 7 },
+  { name: 'Georgia',              label: 'GEORGIA',       col: 7.5,  row: 7 },
+  { name: 'Hawaii',               label: 'HAWAII',        col: 0,    row: 7 },
+  { name: 'Florida',              label: 'FLORIDA',       col: 8,    row: 8 },
 ]
 
 // ── Real Google Trends data ────────────────────────────────────────────────────
@@ -176,15 +179,24 @@ for (const s of STATES) {
 }
 
 // ── Layout constants ──────────────────────────────────────────────────────────
-const CELL    = 112
-const PAD_X   = 65
-const PAD_TOP = 198   // title + subtitle
-const PAD_BOT = 108   // footnotes + legend
-const R_PHOTO = 33    // inner photo/ring radius
-const R_OUTER = 46    // outer white decorative circle
-const R_ARC   = 42    // curved-text path radius (just inside outer ring)
-const W = 12 * CELL + PAD_X * 2
-const H = PAD_TOP + 9 * CELL + PAD_BOT
+// Row spacing is tighter than column spacing (like the reference US tile-grid map),
+// which keeps the 9-row grid short enough to fit a laptop screen without scrolling.
+const CELL_X  = 110
+const CELL_Y  = 96
+const PAD_X   = 55
+const PAD_TOP = 30    // top margin above grid (title/subtitle now rendered as HTML above the SVG)
+const PAD_BOT = 60    // bottom margin below grid
+const R_PHOTO = 38    // inner photo/ring radius
+const R_OUTER = 55    // hex circumradius — 2*R_OUTER=CELL_X, R_OUTER*√3≈CELL_Y → tiles pack perfectly
+const W = 12 * CELL_X + PAD_X * 2
+const H = PAD_TOP + 9 * CELL_Y + PAD_BOT
+
+// Flat-top regular hexagon — horizontal flat edges at top/bottom, pointed left/right.
+// With R_OUTER=55: width=2*55=CELL_X=110, height=√3*55≈95.3≈CELL_Y=96 → tiles pack tight.
+const hexPoints = (cx, cy, r) =>
+  [0, 1, 2, 3, 4, 5]
+    .map(i => `${cx + r * Math.cos(i * Math.PI / 3)},${cy + r * Math.sin(i * Math.PI / 3)}`)
+    .join(' ')
 
 // ── Hover panel (rankings + top player card) ─────────────────────────────────
 function StatePanel({ stateName, screenX, screenY }) {
@@ -194,10 +206,10 @@ function StatePanel({ stateName, screenX, screenY }) {
   const accentColor = topPlayer ? ink(topPlayer.country) : '#4a3828'
 
   const isMobile = window.innerWidth < 640
-  const width    = isMobile ? 220 : 292
+  const width    = isMobile ? 168 : 292
   const toLeft   = screenX > window.innerWidth * 0.55
   const left     = toLeft ? screenX - width - 24 : screenX + 24
-  const top      = Math.max(10, Math.min(screenY - 80, window.innerHeight - (isMobile ? 340 : 460)))
+  const top      = Math.max(10, Math.min(screenY - 80, window.innerHeight - (isMobile ? 280 : 460)))
 
   return (
     <div style={{
@@ -212,9 +224,9 @@ function StatePanel({ stateName, screenX, screenY }) {
     }}>
       {/* State name header */}
       <div style={{
-        padding: isMobile ? '8px 12px 8px' : '11px 16px 10px',
+        padding: isMobile ? '6px 9px 6px' : '11px 16px 10px',
         borderBottom: '1px solid rgba(0,0,0,0.07)',
-        fontSize: isMobile ? 9 : 10.5, fontWeight: 700, letterSpacing: '0.15em',
+        fontSize: isMobile ? 7.5 : 10.5, fontWeight: 700, letterSpacing: '0.15em',
         color: '#5a4220', textTransform: 'uppercase',
         animation: 'stateSlink 0.35s cubic-bezier(0.22, 1, 0.36, 1) both',
       }}>
@@ -222,25 +234,25 @@ function StatePanel({ stateName, screenX, screenY }) {
       </div>
 
       {/* Top-5 rankings */}
-      <div style={{ padding: isMobile ? '6px 0 7px' : '8px 0 10px' }}>
+      <div style={{ padding: isMobile ? '4px 0 5px' : '8px 0 10px' }}>
         {rankings.slice(0, 5).map((pName, i) => {
           const p     = playerByName[pName]
           if (!p) return null
           const color = ink(p.country)
           const pct   = stateData[pName]
           return (
-            <div key={pName} style={{ display: 'flex', alignItems: 'center', padding: isMobile ? '4px 12px' : '5px 16px' }}>
-              <span style={{ width: 16, fontSize: isMobile ? 9.5 : 11, fontWeight: 600, color: '#9a8870', flexShrink: 0 }}>{i + 1}</span>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0, marginRight: 8 }} />
-              <span style={{ fontSize: isMobile ? 11 : 13, color: '#14100b', fontWeight: i === 0 ? 600 : 400 }}>{pName}</span>
-              <span style={{ marginLeft: 'auto', fontSize: isMobile ? 9 : 10, color: pct != null ? color : '#ccc', fontWeight: 500 }}>
+            <div key={pName} style={{ display: 'flex', alignItems: 'center', padding: isMobile ? '3px 9px' : '5px 16px' }}>
+              <span style={{ width: 13, fontSize: isMobile ? 7.5 : 11, fontWeight: 600, color: '#9a8870', flexShrink: 0 }}>{i + 1}</span>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0, marginRight: 6 }} />
+              <span style={{ fontSize: isMobile ? 8.5 : 13, color: '#14100b', fontWeight: i === 0 ? 600 : 400 }}>{pName}</span>
+              <span style={{ marginLeft: 'auto', fontSize: isMobile ? 7 : 10, color: pct != null ? color : '#ccc', fontWeight: 500 }}>
                 {pct != null ? `${pct}%` : '—'}
               </span>
             </div>
           )
         })}
       </div>
-      <div style={{ padding: isMobile ? '5px 12px 7px' : '6px 16px 9px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: isMobile ? 8 : 9, color: '#b0a090', fontStyle: 'italic' }}>
+      <div style={{ padding: isMobile ? '4px 9px 5px' : '6px 16px 9px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: isMobile ? 6.5 : 9, color: '#b0a090', fontStyle: 'italic' }}>
         % = Google Trends interest share (Jan–Jun 2026)
       </div>
 
@@ -249,43 +261,43 @@ function StatePanel({ stateName, screenX, screenY }) {
         <>
           <div style={{ height: 3, background: accentColor }} />
 
-          <div style={{ padding: isMobile ? '8px 12px 6px' : '10px 15px 8px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-            <div style={{ fontSize: isMobile ? 8 : 9.5, color: accentColor, fontWeight: 700, letterSpacing: '0.13em',
-              textTransform: 'uppercase', marginBottom: 5 }}>
+          <div style={{ padding: isMobile ? '6px 9px 5px' : '10px 15px 8px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+            <div style={{ fontSize: isMobile ? 6.5 : 9.5, color: accentColor, fontWeight: 700, letterSpacing: '0.13em',
+              textTransform: 'uppercase', marginBottom: 4 }}>
               {topPlayer.country}
               {isSidelined(topPlayer.name) && (
                 <span style={{ marginLeft: 8, background: '#8b1a1a', color: '#fff',
-                  padding: '1px 6px', borderRadius: 2, fontSize: 8.5, letterSpacing: '0.1em' }}>
+                  padding: '1px 6px', borderRadius: 2, fontSize: isMobile ? 7 : 8.5, letterSpacing: '0.1em' }}>
                   {sidelineLabel(topPlayer.name)}
                 </span>
               )}
             </div>
-            <div style={{ fontSize: isMobile ? 13.5 : 17, fontWeight: 700, color: '#14100b', lineHeight: 1.1 }}>
+            <div style={{ fontSize: isMobile ? 10.5 : 17, fontWeight: 700, color: '#14100b', lineHeight: 1.1 }}>
               {topPlayer.name}
             </div>
-            <div style={{ fontSize: isMobile ? 9.5 : 11, color: '#7a6e60', marginTop: 3 }}>
+            <div style={{ fontSize: isMobile ? 7.5 : 11, color: '#7a6e60', marginTop: 3 }}>
               {topPlayer.position}&ensp;·&ensp;{topPlayer.club}
             </div>
           </div>
 
-          <div style={{ padding: isMobile ? '9px 12px 11px' : '11px 15px 13px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isMobile ? '6px 9px' : '8px 12px', marginBottom: isMobile ? 8 : 10 }}>
+          <div style={{ padding: isMobile ? '6px 9px 8px' : '11px 15px 13px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isMobile ? '4px 6px' : '8px 12px', marginBottom: isMobile ? 6 : 10 }}>
               {[
                 { label: 'Age at WC',  value: topPlayer.age      },
                 { label: 'Caps',       value: topPlayer.caps      },
                 { label: 'Int. Goals', value: topPlayer.intGoals  },
               ].map(({ label: l, value }) => (
                 <div key={l}>
-                  <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
+                  <div style={{ fontSize: isMobile ? 6.5 : 9, color: '#9a8870', textTransform: 'uppercase',
                     letterSpacing: '0.09em', marginBottom: 2 }}>{l}</div>
-                  <div style={{ fontSize: isMobile ? 12.5 : 15, fontWeight: 600, color: '#14100b' }}>{value}</div>
+                  <div style={{ fontSize: isMobile ? 9.5 : 15, fontWeight: 600, color: '#14100b' }}>{value}</div>
                 </div>
               ))}
             </div>
-            <div style={{ paddingTop: isMobile ? 7 : 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-              <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
+            <div style={{ paddingTop: isMobile ? 5 : 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+              <div style={{ fontSize: isMobile ? 6.5 : 9, color: '#9a8870', textTransform: 'uppercase',
                 letterSpacing: '0.09em', marginBottom: 2 }}>Google Search Share</div>
-              <div style={{ fontSize: isMobile ? 12.5 : 15, fontWeight: 600, color: accentColor }}>
+              <div style={{ fontSize: isMobile ? 9.5 : 15, fontWeight: 600, color: accentColor }}>
                 {stateData[topPlayer.name] != null ? `${stateData[topPlayer.name]}%` : '—'}
               </div>
               <div style={{ fontSize: isMobile ? 8.5 : 10, color: '#9a8870', marginTop: 2 }}>
@@ -303,8 +315,6 @@ function StatePanel({ stateName, screenX, screenY }) {
 export default function StateViz() {
   const [hovered, setHovered] = useState(null)
   const [tooltipPos, setPos]  = useState({ x: 0, y: 0 })
-
-  const FY = PAD_TOP + 9 * CELL + 30
 
   return (
     <>
@@ -329,7 +339,13 @@ export default function StateViz() {
         pointer-events: none;
       }
     `}</style>
-    <div style={{ width: '100%', maxWidth: 1480, margin: '0 auto', position: 'relative' }}>
+    <div style={{
+      width: '100%',
+      // Fill available width — the grid is tall enough that capping by viewport
+      // height shrinks the hexagons significantly; width-first fills the screen better.
+      maxWidth: W,
+      margin: '0 auto', position: 'relative',
+    }} onClick={() => setHovered(null)}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         style={{ width: '100%', height: 'auto', display: 'block' }}
@@ -340,41 +356,30 @@ export default function StateViz() {
         <rect x={12} y={12} width={W - 24} height={H - 24} rx={5}
           fill="none" stroke="rgba(130,100,55,0.15)" strokeWidth="1" />
 
-        {/* ── Title ── */}
-        <text x={W / 2} y={220} textAnchor="middle"
-          fill="#2d2410" fontSize={80} fontWeight="700"
+        {/* ── Title — fontSize 64/18 matches the .chart-title/.chart-subtitle size used on the other charts ── */}
+        <text x={W / 2} y={142} textAnchor="middle"
+          fill="#2d2410" fontSize={94} fontWeight="700"
           fontFamily="'Raleway', system-ui, sans-serif">
-          The Most Googled
+          Ronaldo Rules
         </text>
-        <text x={W / 2} y={305} textAnchor="middle"
-          fill="#2d2410" fontSize={80} fontWeight="700"
+        <text x={W / 2} y={190} textAnchor="middle"
+          fill="#8a7860" fontSize={26} fontWeight="400"
           fontFamily="'Raleway', system-ui, sans-serif">
-          Footballer by U.S. State
-        </text>
-
-        {/* ── Subtitle ── */}
-        <text x={W / 2} y={355} textAnchor="middle"
-          fill="#8a7860" fontSize={21} fontWeight="400"
-          fontFamily="'Raleway', system-ui, sans-serif">
-          Ronaldo is ranked first in 45 states and D.C.
-        </text>
-        <text x={W / 2} y={385} textAnchor="middle"
-          fill="#8a7860" fontSize={21} fontWeight="400"
-          fontFamily="'Raleway', system-ui, sans-serif">
-          Messi leads in Florida, Maryland, Utah, Colorado, Alabama and Vermont.
+          He leads search interest in 45 states and Washington, D.C.
         </text>
 
         {/* ── State cells ── */}
         {STATES.map(state => {
-          const cx      = PAD_X + state.col * CELL + CELL / 2
-          const cy      = PAD_TOP + state.row * CELL + CELL / 2
+          const cx      = PAD_X + state.col * CELL_X + CELL_X / 2
+          const cy      = PAD_TOP + state.row * CELL_Y + CELL_Y / 2
           const topName = (STATE_RANKINGS[state.name] ?? [])[0]
           const player  = playerByName[topName]
           const color   = player ? ink(player.country) : '#aaa'
           const isHov   = hovered === state.name
-          const clipId  = `sc-${state.name.replace(/[\s.]/g, '-')}`
-          const arcId   = `ar-${state.name.replace(/[\s.]/g, '-')}`
-          const fsz     = state.label.length > 12 ? 5.8 : state.label.length > 9 ? 6.5 : 7.4
+          const clipId   = `sc-${state.name.replace(/[\s.]/g, '-')}`
+          // y of the flat top edge of the hexagon
+          const topEdgeY = cy - R_OUTER * Math.sqrt(3) / 2
+          const fsz      = state.label.length > 12 ? 7.5 : state.label.length > 9 ? 8.5 : 10
 
           return (
             <g key={state.name}
@@ -387,24 +392,33 @@ export default function StateViz() {
               }}
               onMouseEnter={e => { setHovered(state.name); setPos({ x: e.clientX, y: e.clientY }) }}
               onMouseLeave={() => setHovered(null)}
+              onClick={e => {
+                e.stopPropagation()
+                if (hovered === state.name) {
+                  setHovered(null)
+                } else {
+                  setHovered(state.name)
+                  setPos({ x: e.clientX, y: e.clientY })
+                }
+              }}
             >
               <defs>
-                <clipPath id={clipId}><circle cx={cx} cy={cy} r={R_PHOTO} /></clipPath>
-                {/* Top-arc path for curved label — counterclockwise from left to right */}
-                <path id={arcId}
-                  d={`M ${cx - R_ARC} ${cy} A ${R_ARC} ${R_ARC} 0 0 0 ${cx + R_ARC} ${cy}`} />
+                {/* Hex clip for the player photo */}
+                <clipPath id={clipId}>
+                  <polygon points={hexPoints(cx, cy, R_PHOTO)} />
+                </clipPath>
               </defs>
 
-              {/* Ripple ring — mounts on hover and animates outward once */}
+              {/* Ripple hex — mounts on hover and animates outward once */}
               {isHov && (
-                <circle className="stamp-ripple"
-                  cx={cx} cy={cy} r={R_OUTER}
+                <polygon className="stamp-ripple"
+                  points={hexPoints(cx, cy, R_OUTER)}
                   fill="none" stroke={color} strokeWidth="2"
                 />
               )}
 
-              {/* Outer white circle */}
-              <circle cx={cx} cy={cy} r={R_OUTER}
+              {/* Outer hexagon background */}
+              <polygon points={hexPoints(cx, cy, R_OUTER)}
                 fill="#ddd8ce"
                 stroke={isHov ? color : 'rgba(185,165,130,0.45)'}
                 strokeWidth={isHov ? 2.2 : 1.4}
@@ -412,7 +426,7 @@ export default function StateViz() {
                          filter: isHov ? `drop-shadow(0 3px 12px ${color}55)` : 'none' }}
               />
 
-              {/* Player photo */}
+              {/* Player photo clipped to hex */}
               {player && (
                 <image
                   href={assetUrl(player.photo)}
@@ -428,40 +442,34 @@ export default function StateViz() {
                 />
               )}
 
-              {/* Country colour ring */}
-              <circle cx={cx} cy={cy} r={R_PHOTO}
+              {/* Country colour hex ring (inner) */}
+              <polygon points={hexPoints(cx, cy, R_PHOTO)}
                 fill="none" stroke={color}
                 strokeWidth={isHov ? 3 : 2.2}
                 style={{ transition: 'stroke-width 0.2s' }}
               />
 
-              {/* Curved state name — droops away on hover */}
+              {/* State name on the flat top edge of the hexagon */}
               <g style={{
                 opacity:    isHov ? 0 : 1,
-                transform:  isHov ? 'translateY(8px)' : 'translateY(0px)',
+                transform:  isHov ? 'translateY(6px)' : 'translateY(0px)',
                 transition: 'opacity 0.2s ease-out, transform 0.22s ease-out',
               }}>
                 <text
+                  x={cx} y={topEdgeY + fsz + 1}
+                  textAnchor="middle"
                   fill={isHov ? color : '#6a5638'}
                   fontSize={fsz}
                   fontFamily="'Raleway', 'Arial Narrow', sans-serif"
                   fontWeight="700"
-                  letterSpacing="1"
+                  letterSpacing="0.5"
                 >
-                  <textPath href={`#${arcId}`} startOffset="50%" textAnchor="middle">
-                    {state.label}
-                  </textPath>
+                  {state.label}
                 </text>
               </g>
             </g>
           )
         })}
-
-        {/* ── Bottom-left footnote ── */}
-        <text x={PAD_X} y={FY} fill="#6a5838" fontSize={16} fontWeight="400"
-          fontFamily="'Raleway', system-ui, sans-serif" >
-          Data: Google Trends, January 1st - June 11th 2026 · Top 5 players compared per state.
-        </text>
 
       </svg>
 
