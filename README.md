@@ -2,6 +2,8 @@
 
 A scrollytelling site exploring the data behind the 2026 FIFA World Cup — built with React and D3, ahead of the tournament kicking off in the United States, Canada, and Mexico.
 
+**Live site:** https://andypetes94.github.io/world-cup-visualisation/
+
 Five chapters, each pairing a short narrative with a custom interactive chart:
 
 | | Chapter | Visualization |
