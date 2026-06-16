@@ -1,16 +1,36 @@
-# React + Vite
+# WC · 2026 — A Data Portrait of the World Cup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A scrollytelling site exploring the data behind the 2026 FIFA World Cup — built with React and D3, ahead of the tournament kicking off in the United States, Canada, and Mexico.
 
-Currently, two official plugins are available:
+Five chapters, each pairing a short narrative with a custom interactive chart:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| | Chapter | Visualization |
+|---|---|---|
+| **Part I** | The Players the World Can't Stop Searching | `PassportViz` — Wikipedia attention on the world's most-tracked players |
+| **Part II** | Soccer Mania Sweeps the United States | `StateViz` — state-by-state Google search interest across the host nation |
+| **Part III** | The Price of the Beautiful Game | `TicketViz` — ticket marketplace pricing across matches and rounds |
+| **Part IV** | The Changing Face of the World Cup | `ConfederationViz` — confederation representation as the tournament has expanded |
+| **Part V** | The Road to the Final | `AirMilesViz` — every group's possible knockout routes, plotted on a real North America basemap |
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React 19](https://react.dev) + [Vite](https://vite.dev) for the app shell and dev/build tooling
+- [D3](https://d3js.org) (`d3`, `d3-geo`) for scales, projections, and geographic paths
+- [TopoJSON](https://github.com/topojson/topojson-client) + [world-atlas](https://github.com/topojson/world-atlas) for country geometry in `AirMilesViz`
 
-## Expanding the ESLint configuration
+All chart data lives alongside the components that render it (e.g. `WorldCupTravelData.js` for the Road to the Final chapter) so each visualization is self-contained.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Other scripts:
+
+```bash
+npm run build    # production build
+npm run preview  # preview the production build locally
+npm run lint     # run ESLint
+```
