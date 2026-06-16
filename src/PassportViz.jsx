@@ -364,9 +364,12 @@ function PlayerTooltip({ player, screenX, screenY }) {
   const color    = ink(player.country)
   const rejected = isSidelined(player.name)
   const label    = sidelineLabel(player.name)
+  const isMobile = window.innerWidth < 640
+  const width    = isMobile ? 188 : 260
+  const photoH   = isMobile ? 120 : 190
   const toLeft   = screenX > window.innerWidth * 0.58
-  const left     = toLeft ? screenX - 284 : screenX + 24
-  const top      = Math.max(10, Math.min(screenY - 160, window.innerHeight - 460))
+  const left     = toLeft ? screenX - width - 24 : screenX + 24
+  const top      = Math.max(10, Math.min(screenY - 160, window.innerHeight - (isMobile ? 330 : 460)))
 
   const statRow = [
     { label: 'Age at WC',  value: player.age },
@@ -377,7 +380,7 @@ function PlayerTooltip({ player, screenX, screenY }) {
   return (
     <div style={{
       position: 'fixed', left, top,
-      width: 260, zIndex: 1000, pointerEvents: 'none',
+      width, zIndex: 1000, pointerEvents: 'none',
       background: '#fdfaf4',
       borderRadius: 5,
       boxShadow: '0 6px 28px rgba(0,0,0,0.20)',
@@ -388,8 +391,8 @@ function PlayerTooltip({ player, screenX, screenY }) {
       <div style={{ height: 4, background: color }} />
 
       {/* Header */}
-      <div style={{ padding: '11px 15px 9px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-        <div style={{ fontSize: 9.5, color, fontWeight: 700, letterSpacing: '0.13em',
+      <div style={{ padding: isMobile ? '8px 11px 7px' : '11px 15px 9px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+        <div style={{ fontSize: isMobile ? 8 : 9.5, color, fontWeight: 700, letterSpacing: '0.13em',
           textTransform: 'uppercase', marginBottom: 5 }}>
           Rank #{player.rank} · {player.country}
           {rejected && <span style={{ marginLeft: 8, background: '#8b1a1a', color: '#fff',
@@ -397,40 +400,40 @@ function PlayerTooltip({ player, screenX, screenY }) {
             {label}
           </span>}
         </div>
-        <div style={{ fontSize: 19, fontWeight: 700, color: '#14100b',
+        <div style={{ fontSize: isMobile ? 14.5 : 19, fontWeight: 700, color: '#14100b',
           lineHeight: 1.1, letterSpacing: '0.01em' }}>
           {player.name}
         </div>
-        <div style={{ fontSize: 11, color: '#7a6e60', marginTop: 4 }}>
+        <div style={{ fontSize: isMobile ? 9.5 : 11, color: '#7a6e60', marginTop: 4 }}>
           {player.position}&ensp;·&ensp;{player.club}
         </div>
       </div>
 
       {/* Photo */}
       <img src={assetUrl(player.photo)} alt={player.name} style={{
-        width: '100%', height: 190, objectFit: 'cover',
+        width: '100%', height: photoH, objectFit: 'cover',
         objectPosition: 'center 18%', display: 'block',
         filter: rejected ? 'grayscale(1)' : 'none',
       }} />
 
       {/* Stats grid */}
-      <div style={{ padding: '12px 15px 14px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px 14px' }}>
+      <div style={{ padding: isMobile ? '9px 11px 10px' : '12px 15px 14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isMobile ? '7px 10px' : '10px 14px' }}>
           {statRow.map(({ label, value }) => (
             <div key={label}>
-              <div style={{ fontSize: 9, color: '#9a8870', textTransform: 'uppercase',
+              <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
                 letterSpacing: '0.09em', marginBottom: 2 }}>{label}</div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: '#14100b' }}>{value}</div>
+              <div style={{ fontSize: isMobile ? 13 : 16, fontWeight: 600, color: '#14100b' }}>{value}</div>
             </div>
           ))}
         </div>
 
         {/* Popularity score + raw views */}
-        <div style={{ marginTop: 11, paddingTop: 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-          <div style={{ fontSize: 9, color: '#9a8870', textTransform: 'uppercase',
+        <div style={{ marginTop: isMobile ? 8 : 11, paddingTop: isMobile ? 7 : 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+          <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
             letterSpacing: '0.09em', marginBottom: 2 }}>Wikipedia Interest Score</div>
-          <div style={{ fontSize: 16, fontWeight: 600, color }}>{player.score.toFixed(1)} / 100</div>
-          <div style={{ fontSize: 10, color: '#9a8870', marginTop: 2 }}>
+          <div style={{ fontSize: isMobile ? 13 : 16, fontWeight: 600, color }}>{player.score.toFixed(1)} / 100</div>
+          <div style={{ fontSize: isMobile ? 8.5 : 10, color: '#9a8870', marginTop: 2 }}>
             {player.wikiViews.toLocaleString()} page views (Jan – Jun 2026)
           </div>
         </div>

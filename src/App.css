@@ -49,6 +49,42 @@
   color: var(--text-heading);
 }
 
+/* ---- Burger (mobile only — hidden by default, shown in the media query below) ---- */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.nav-burger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text-heading);
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.nav-burger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-burger--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-burger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 /* ---- Hero ---- */
 .hero {
   position: relative;
@@ -512,8 +548,42 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
+  .nav-burger {
+    display: flex;
+  }
+
   .nav-links {
-    display: none;
+    position: fixed;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 8px 0;
+    background: rgba(237, 232, 220, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+
+  .nav-links--open {
+    max-height: 70vh;
+    opacity: 1;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 14px clamp(24px, 5vw, 60px);
+    width: 100%;
   }
 
   .hero-year {

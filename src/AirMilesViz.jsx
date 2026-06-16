@@ -182,6 +182,7 @@ export default function AirMilesViz() {
     }
   }
 
+  const isMobile = window.innerWidth < 640
   const tooltipTeam = hov?.teamIdx !== undefined ? hoveredRow.teams[hov.teamIdx] : null
   const tooltipLegs = useMemo(() => {
     if (!tooltipTeam) return null
@@ -409,28 +410,28 @@ export default function AirMilesViz() {
           border: '1px solid rgba(0,0,0,0.1)',
           borderRadius: 6,
           boxShadow: '0 6px 20px rgba(20,16,11,0.18)',
-          padding: '10px 14px',
-          minWidth: 190,
-          maxWidth: 230,
+          padding: isMobile ? '7px 10px' : '10px 14px',
+          minWidth: isMobile ? 150 : 190,
+          maxWidth: isMobile ? 180 : 230,
           pointerEvents: 'none',
           zIndex: 10,
         }}>
           <div style={{
             fontFamily: "'Raleway', system-ui, sans-serif",
-            fontWeight: 700, fontSize: 13,
+            fontWeight: 700, fontSize: isMobile ? 11 : 13,
             color: '#2d2410', marginBottom: 2,
           }}>
             {tooltipTeam.name}
           </div>
           <div style={{
             fontFamily: "'DM Sans', system-ui, sans-serif",
-            fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em',
+            fontSize: isMobile ? 8.5 : 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em',
             color: POS_COLOR[hoveredRow.position], marginBottom: 6,
           }}>
             Group {hoveredRow.group} &middot; {hoveredRow.position}
           </div>
           <div style={{
-            fontSize: 10.5, color: '#9a8870', fontStyle: 'italic', marginBottom: 5,
+            fontSize: isMobile ? 9 : 10.5, color: '#9a8870', fontStyle: 'italic', marginBottom: 5,
           }}>
             Starts: {VENUES[tooltipTeam.segments[0].venue].city}
           </div>
@@ -439,9 +440,9 @@ export default function AirMilesViz() {
               <div key={i} style={{
                 display: 'flex', justifyContent: 'space-between', gap: 10,
                 fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: 11.5, color: '#4a3828',
+                fontSize: isMobile ? 10 : 11.5, color: '#4a3828',
               }}>
-                <span>{leg.city} <span style={{ color: '#9a8870', fontSize: 9.5 }}>({leg.round})</span></span>
+                <span>{leg.city} <span style={{ color: '#9a8870', fontSize: isMobile ? 8 : 9.5 }}>({leg.round})</span></span>
                 <span style={{ color: '#9a8870', fontWeight: 600, whiteSpace: 'nowrap' }}>+{Math.round(leg.km).toLocaleString()} km</span>
               </div>
             ))}
@@ -449,7 +450,7 @@ export default function AirMilesViz() {
           <div style={{
             marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(0,0,0,0.08)',
             display: 'flex', justifyContent: 'space-between',
-            fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 11.5, fontWeight: 700, color: '#2d2410',
+            fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: isMobile ? 10 : 11.5, fontWeight: 700, color: '#2d2410',
           }}>
             <span>Total</span>
             <span>{Math.round(tooltipLegsTotal).toLocaleString()} km &middot; {Math.round(kmToMiles(tooltipLegsTotal)).toLocaleString()} mi</span>
@@ -457,7 +458,7 @@ export default function AirMilesViz() {
           {hoveredRow.optionCount > 1 && (
             <div style={{
               marginTop: 6, fontFamily: "'DM Sans', system-ui, sans-serif",
-              fontSize: 9.5, color: '#9a8870', fontStyle: 'italic',
+              fontSize: isMobile ? 8.5 : 9.5, color: '#9a8870', fontStyle: 'italic',
             }}>
               One of {hoveredRow.optionCount} possible knockout entry points &mdash; chart bar uses the average
             </div>
@@ -481,24 +482,24 @@ export default function AirMilesViz() {
             borderRadius: 6,
             boxShadow: '0 6px 20px rgba(20,16,11,0.18)',
             overflow: 'hidden',
-            width: 210,
+            width: isMobile ? 160 : 210,
             pointerEvents: 'none',
             zIndex: 11,
           }}>
             {img?.url && (
-              <img src={img.url} alt={v.name} style={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }} />
+              <img src={img.url} alt={v.name} style={{ width: '100%', height: isMobile ? 70 : 110, objectFit: 'cover', display: 'block' }} />
             )}
-            <div style={{ padding: '10px 14px' }}>
-              <div style={{ fontFamily: "'Raleway', system-ui, sans-serif", fontWeight: 700, fontSize: 13, color: '#2d2410' }}>
+            <div style={{ padding: isMobile ? '7px 10px' : '10px 14px' }}>
+              <div style={{ fontFamily: "'Raleway', system-ui, sans-serif", fontWeight: 700, fontSize: isMobile ? 11 : 13, color: '#2d2410' }}>
                 {v.name}
               </div>
-              <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 10.5, color: '#9a8870', fontStyle: 'italic', marginBottom: 6 }}>
+              <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: isMobile ? 9 : 10.5, color: '#9a8870', fontStyle: 'italic', marginBottom: 6 }}>
                 {v.city}, {v.country}
               </div>
-              <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 11.5, color: '#4a3828', marginBottom: 4 }}>
+              <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: isMobile ? 10 : 11.5, color: '#4a3828', marginBottom: 4 }}>
                 Capacity: <strong>{v.capacity.toLocaleString()}</strong>
               </div>
-              <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 10.5, color: '#4a3828', lineHeight: 1.5 }}>
+              <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: isMobile ? 9 : 10.5, color: '#4a3828', lineHeight: 1.5 }}>
                 {rounds.map((r, i) => <div key={i}>{r}</div>)}
               </div>
             </div>

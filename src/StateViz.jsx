@@ -193,14 +193,16 @@ function StatePanel({ stateName, screenX, screenY }) {
   const topPlayer  = playerByName[rankings[0]]
   const accentColor = topPlayer ? ink(topPlayer.country) : '#4a3828'
 
-  const toLeft = screenX > window.innerWidth * 0.55
-  const left   = toLeft ? screenX - 316 : screenX + 24
-  const top    = Math.max(10, Math.min(screenY - 80, window.innerHeight - 460))
+  const isMobile = window.innerWidth < 640
+  const width    = isMobile ? 220 : 292
+  const toLeft   = screenX > window.innerWidth * 0.55
+  const left     = toLeft ? screenX - width - 24 : screenX + 24
+  const top      = Math.max(10, Math.min(screenY - 80, window.innerHeight - (isMobile ? 340 : 460)))
 
   return (
     <div style={{
       position: 'fixed', left, top, zIndex: 1000,
-      width: 292,
+      width,
       background: '#fdfaf4',
       borderRadius: 6,
       boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
@@ -210,9 +212,9 @@ function StatePanel({ stateName, screenX, screenY }) {
     }}>
       {/* State name header */}
       <div style={{
-        padding: '11px 16px 10px',
+        padding: isMobile ? '8px 12px 8px' : '11px 16px 10px',
         borderBottom: '1px solid rgba(0,0,0,0.07)',
-        fontSize: 10.5, fontWeight: 700, letterSpacing: '0.15em',
+        fontSize: isMobile ? 9 : 10.5, fontWeight: 700, letterSpacing: '0.15em',
         color: '#5a4220', textTransform: 'uppercase',
         animation: 'stateSlink 0.35s cubic-bezier(0.22, 1, 0.36, 1) both',
       }}>
@@ -220,25 +222,25 @@ function StatePanel({ stateName, screenX, screenY }) {
       </div>
 
       {/* Top-5 rankings */}
-      <div style={{ padding: '8px 0 10px' }}>
+      <div style={{ padding: isMobile ? '6px 0 7px' : '8px 0 10px' }}>
         {rankings.slice(0, 5).map((pName, i) => {
           const p     = playerByName[pName]
           if (!p) return null
           const color = ink(p.country)
           const pct   = stateData[pName]
           return (
-            <div key={pName} style={{ display: 'flex', alignItems: 'center', padding: '5px 16px' }}>
-              <span style={{ width: 18, fontSize: 11, fontWeight: 600, color: '#9a8870', flexShrink: 0 }}>{i + 1}</span>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0, marginRight: 9 }} />
-              <span style={{ fontSize: 13, color: '#14100b', fontWeight: i === 0 ? 600 : 400 }}>{pName}</span>
-              <span style={{ marginLeft: 'auto', fontSize: 10, color: pct != null ? color : '#ccc', fontWeight: 500 }}>
+            <div key={pName} style={{ display: 'flex', alignItems: 'center', padding: isMobile ? '4px 12px' : '5px 16px' }}>
+              <span style={{ width: 16, fontSize: isMobile ? 9.5 : 11, fontWeight: 600, color: '#9a8870', flexShrink: 0 }}>{i + 1}</span>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0, marginRight: 8 }} />
+              <span style={{ fontSize: isMobile ? 11 : 13, color: '#14100b', fontWeight: i === 0 ? 600 : 400 }}>{pName}</span>
+              <span style={{ marginLeft: 'auto', fontSize: isMobile ? 9 : 10, color: pct != null ? color : '#ccc', fontWeight: 500 }}>
                 {pct != null ? `${pct}%` : '—'}
               </span>
             </div>
           )
         })}
       </div>
-      <div style={{ padding: '6px 16px 9px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: 9, color: '#b0a090', fontStyle: 'italic' }}>
+      <div style={{ padding: isMobile ? '5px 12px 7px' : '6px 16px 9px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: isMobile ? 8 : 9, color: '#b0a090', fontStyle: 'italic' }}>
         % = Google Trends interest share (Jan–Jun 2026)
       </div>
 
@@ -247,8 +249,8 @@ function StatePanel({ stateName, screenX, screenY }) {
         <>
           <div style={{ height: 3, background: accentColor }} />
 
-          <div style={{ padding: '10px 15px 8px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
-            <div style={{ fontSize: 9.5, color: accentColor, fontWeight: 700, letterSpacing: '0.13em',
+          <div style={{ padding: isMobile ? '8px 12px 6px' : '10px 15px 8px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+            <div style={{ fontSize: isMobile ? 8 : 9.5, color: accentColor, fontWeight: 700, letterSpacing: '0.13em',
               textTransform: 'uppercase', marginBottom: 5 }}>
               {topPlayer.country}
               {isSidelined(topPlayer.name) && (
@@ -258,35 +260,35 @@ function StatePanel({ stateName, screenX, screenY }) {
                 </span>
               )}
             </div>
-            <div style={{ fontSize: 17, fontWeight: 700, color: '#14100b', lineHeight: 1.1 }}>
+            <div style={{ fontSize: isMobile ? 13.5 : 17, fontWeight: 700, color: '#14100b', lineHeight: 1.1 }}>
               {topPlayer.name}
             </div>
-            <div style={{ fontSize: 11, color: '#7a6e60', marginTop: 3 }}>
+            <div style={{ fontSize: isMobile ? 9.5 : 11, color: '#7a6e60', marginTop: 3 }}>
               {topPlayer.position}&ensp;·&ensp;{topPlayer.club}
             </div>
           </div>
 
-          <div style={{ padding: '11px 15px 13px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px 12px', marginBottom: 10 }}>
+          <div style={{ padding: isMobile ? '9px 12px 11px' : '11px 15px 13px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isMobile ? '6px 9px' : '8px 12px', marginBottom: isMobile ? 8 : 10 }}>
               {[
                 { label: 'Age at WC',  value: topPlayer.age      },
                 { label: 'Caps',       value: topPlayer.caps      },
                 { label: 'Int. Goals', value: topPlayer.intGoals  },
               ].map(({ label: l, value }) => (
                 <div key={l}>
-                  <div style={{ fontSize: 9, color: '#9a8870', textTransform: 'uppercase',
+                  <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
                     letterSpacing: '0.09em', marginBottom: 2 }}>{l}</div>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: '#14100b' }}>{value}</div>
+                  <div style={{ fontSize: isMobile ? 12.5 : 15, fontWeight: 600, color: '#14100b' }}>{value}</div>
                 </div>
               ))}
             </div>
-            <div style={{ paddingTop: 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-              <div style={{ fontSize: 9, color: '#9a8870', textTransform: 'uppercase',
+            <div style={{ paddingTop: isMobile ? 7 : 9, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+              <div style={{ fontSize: isMobile ? 8 : 9, color: '#9a8870', textTransform: 'uppercase',
                 letterSpacing: '0.09em', marginBottom: 2 }}>Google Search Share</div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: accentColor }}>
+              <div style={{ fontSize: isMobile ? 12.5 : 15, fontWeight: 600, color: accentColor }}>
                 {stateData[topPlayer.name] != null ? `${stateData[topPlayer.name]}%` : '—'}
               </div>
-              <div style={{ fontSize: 10, color: '#9a8870', marginTop: 2 }}>
+              <div style={{ fontSize: isMobile ? 8.5 : 10, color: '#9a8870', marginTop: 2 }}>
                 In {stateName}, Jan–Jun 2026
               </div>
             </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './App.css'
 import PassportViz from './PassportViz'
 import StateViz from './StateViz'
@@ -53,17 +54,27 @@ function SectionDivider() {
 
 
 export default function App() {
+  const [navOpen, setNavOpen] = useState(false)
+
   return (
     <>
       {/* ── Navigation ── */}
       <nav className="site-nav">
         <span className="nav-brand">WC · 2026</span>
-        <ul className="nav-links">
-          <li><a href="#chapter-1">The Players</a></li>
-          <li><a href="#chapter-2">The States</a></li>
-          <li><a href="#chapter-3">The Tickets</a></li>
-          <li><a href="#chapter-4">The Confederations</a></li>
-          <li><a href="#chapter-5">The Road to the Final</a></li>
+        <button
+          className={`nav-burger${navOpen ? ' nav-burger--open' : ''}`}
+          aria-label={navOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={navOpen}
+          onClick={() => setNavOpen(open => !open)}
+        >
+          <span /><span /><span />
+        </button>
+        <ul className={`nav-links${navOpen ? ' nav-links--open' : ''}`}>
+          <li><a href="#chapter-1" onClick={() => setNavOpen(false)}>The Players</a></li>
+          <li><a href="#chapter-2" onClick={() => setNavOpen(false)}>The States</a></li>
+          <li><a href="#chapter-3" onClick={() => setNavOpen(false)}>The Tickets</a></li>
+          <li><a href="#chapter-4" onClick={() => setNavOpen(false)}>The Confederations</a></li>
+          <li><a href="#chapter-5" onClick={() => setNavOpen(false)}>The Road to the Final</a></li>
         </ul>
       </nav>
 
