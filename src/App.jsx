@@ -75,6 +75,7 @@ function HeroMotifs() {
 }
 
 const SITE_URL   = 'https://andypetes94.github.io/world-cup-visualisation/'
+const GITHUB_URL = 'https://github.com/andypetes94/world-cup-visualisation'
 const SHARE_TEXT = 'Before the Whistle — a data portrait of the 2026 World Cup'
 
 const SHARE_LINKS = [
@@ -83,6 +84,61 @@ const SHARE_LINKS = [
   { label: 'X',        href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(SITE_URL)}&text=${encodeURIComponent(SHARE_TEXT)}` },
   { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}` },
 ]
+
+const ARCH_LAYERS = [
+  {
+    label: 'Data Sources',
+    accent: '#c9a05c',
+    main: 'Wikipedia REST API · Google Trends · FIFA / WorldCupGuide.com · Wikimedia Commons · The Economist',
+    sub:  'Publicly available records — page views, search interest, ticket face values, stadium photos',
+  },
+  {
+    label: 'Data Processing',
+    accent: '#4895ef',
+    main: 'WorldCupTravelData.js — venues, lat/lon, routes, haversine distances',
+    sub:  'Google Trends normalisation · Pre-computed Sankey positions · D3-geo projection fit at module level',
+  },
+  {
+    label: 'React 19 Components — 5 Chapters',
+    accent: '#2a9d8f',
+    main: 'PassportViz · StateViz · TicketViz · ConfederationViz · AirMilesViz',
+    sub:  'useState / useMemo / useRef · Prop-driven SVG · Per-component hover & tooltip state',
+  },
+  {
+    label: 'Visualization Stack',
+    accent: '#c1121f',
+    main: 'D3-geo Mercator projection · SVG animations (CSS keyframes) · CSS transitions · Flat-top hex grid',
+    sub:  'Responsive min() viewport constraint · Mobile-first flex layout · viewBox scaling',
+  },
+  {
+    label: 'Build & Deploy',
+    accent: '#7209b7',
+    main: 'Vite 8  →  GitHub Pages · world-atlas + topojson-client',
+    sub:  'Zero runtime dependencies beyond React + D3-geo · Static site, no backend',
+  },
+]
+
+function ArchitectureDiagram() {
+  return (
+    <div className="arch-diagram">
+      <p className="arch-title">Technical Architecture</p>
+      <p className="arch-subtitle">Before the Whistle — World Cup 2026</p>
+      {ARCH_LAYERS.flatMap((layer, i) => [
+        <div key={layer.label} className="arch-layer" style={{ '--arch-accent': layer.accent }}>
+          <div className="arch-stripe" />
+          <div className="arch-body">
+            <p className="arch-label">{layer.label}</p>
+            <p className="arch-main">{layer.main}</p>
+            <p className="arch-sub">{layer.sub}</p>
+          </div>
+        </div>,
+        i < ARCH_LAYERS.length - 1 && (
+          <div key={`arrow-${i}`} className="arch-arrow" aria-hidden="true">↓</div>
+        ),
+      ])}
+    </div>
+  )
+}
 
 function SectionDivider() {
   return (
@@ -503,6 +559,24 @@ export default function App() {
               </a>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Built With ── */}
+      <section className="built-with-section">
+        <div className="container--narrow built-with-inner">
+          <p className="built-with-label">Built With</p>
+          <div className="tech-stack">
+            {['React 19', 'D3.js', 'SVG Animations', 'Vite', 'Responsive Design', 'GitHub Pages'].map(t => (
+              <span key={t} className="tech-pill">{t}</span>
+            ))}
+          </div>
+          <div className="built-with-links">
+            <a className="built-with-link" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+              View Source Code →
+            </a>
+          </div>
+          <ArchitectureDiagram />
         </div>
       </section>
 

@@ -1,0 +1,136 @@
+<svg viewBox="0 0 900 618" width="900" height="618"
+  xmlns="http://www.w3.org/2000/svg"
+  font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="618" fill="#fdfaf4" rx="10"/>
+  <rect x="1" y="1" width="898" height="616" rx="9" fill="none"
+    stroke="rgba(130,100,55,0.18)" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="450" y="34" text-anchor="middle"
+    font-size="18" font-weight="700" fill="#2d2410" letter-spacing="-0.01em">
+    Technical Architecture
+  </text>
+  <text x="450" y="54" text-anchor="middle"
+    font-size="11.5" fill="#9a8870" letter-spacing="0.04em">
+    Before the Whistle — World Cup 2026
+  </text>
+
+  <!-- ─────────────────── LAYER 1: DATA SOURCES ─────────────────── -->
+  <rect x="40" y="72" width="820" height="80" rx="7"
+    fill="#fffdf8" stroke="rgba(130,100,55,0.18)" stroke-width="1"/>
+  <!-- colour stripe -->
+  <rect x="40" y="72" width="5" height="80" rx="3" fill="#c9a05c"/>
+
+  <text x="66" y="90" font-size="9.5" font-weight="700" fill="#c9a05c"
+    letter-spacing="0.14em" text-decoration="none">DATA SOURCES</text>
+
+  <text x="66" y="110" font-size="12.5" fill="#2d2410">
+    Wikipedia REST API
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    Google Trends (US)
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    FIFA / WorldCupGuide.com
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    Wikimedia Commons
+  </text>
+  <text x="66" y="131" font-size="11" fill="#9a8870">
+    Publicly available records — page views, search interest, ticket face values, stadium photos
+  </text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="450" y1="152" x2="450" y2="174" stroke="#c8b89a" stroke-width="1.5"/>
+  <polygon points="450,180 444,170 456,170" fill="#c8b89a"/>
+
+  <!-- ─────────────────── LAYER 2: DATA PROCESSING ─────────────────── -->
+  <rect x="40" y="182" width="820" height="80" rx="7"
+    fill="#fffdf8" stroke="rgba(130,100,55,0.18)" stroke-width="1"/>
+  <rect x="40" y="182" width="5" height="80" rx="3" fill="#4895ef"/>
+
+  <text x="66" y="200" font-size="9.5" font-weight="700" fill="#4895ef"
+    letter-spacing="0.14em">DATA PROCESSING</text>
+
+  <text x="66" y="220" font-size="12.5" fill="#2d2410">
+    WorldCupTravelData.js — venues, lat/lon, routes, haversine distances
+  </text>
+  <text x="66" y="241" font-size="11" fill="#9a8870">
+    Google Trends normalisation  ·  Pre-computed Sankey section positions  ·  D3-geo projection fit at module level
+  </text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="450" y1="262" x2="450" y2="284" stroke="#c8b89a" stroke-width="1.5"/>
+  <polygon points="450,290 444,280 456,280" fill="#c8b89a"/>
+
+  <!-- ─────────────────── LAYER 3: REACT COMPONENTS ─────────────────── -->
+  <rect x="40" y="292" width="820" height="80" rx="7"
+    fill="#fffdf8" stroke="rgba(130,100,55,0.18)" stroke-width="1"/>
+  <rect x="40" y="292" width="5" height="80" rx="3" fill="#2a9d8f"/>
+
+  <text x="66" y="310" font-size="9.5" font-weight="700" fill="#2a9d8f"
+    letter-spacing="0.14em">REACT 19 COMPONENTS — 5 CHAPTERS</text>
+
+  <text x="66" y="330" font-size="12.5" fill="#2d2410">
+    PassportViz
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    StateViz
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    TicketViz
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    ConfederationViz
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    AirMilesViz
+  </text>
+  <text x="66" y="351" font-size="11" fill="#9a8870">
+    useState / useMemo / useRef  ·  Prop-driven SVG  ·  Per-component hover &amp; tooltip state
+  </text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="450" y1="372" x2="450" y2="394" stroke="#c8b89a" stroke-width="1.5"/>
+  <polygon points="450,400 444,390 456,390" fill="#c8b89a"/>
+
+  <!-- ─────────────────── LAYER 4: VISUALIZATION STACK ─────────────────── -->
+  <rect x="40" y="402" width="820" height="80" rx="7"
+    fill="#fffdf8" stroke="rgba(130,100,55,0.18)" stroke-width="1"/>
+  <rect x="40" y="402" width="5" height="80" rx="3" fill="#c1121f"/>
+
+  <text x="66" y="420" font-size="9.5" font-weight="700" fill="#c1121f"
+    letter-spacing="0.14em">VISUALIZATION STACK</text>
+
+  <text x="66" y="440" font-size="12.5" fill="#2d2410">
+    D3-geo Mercator projection  ·  SVG animations (CSS keyframes)  ·  CSS transitions  ·  Flat-top hex grid
+  </text>
+  <text x="66" y="461" font-size="11" fill="#9a8870">
+    Responsive min() viewport constraint  ·  Mobile-first flex layout  ·  viewBox scaling
+  </text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="450" y1="482" x2="450" y2="504" stroke="#c8b89a" stroke-width="1.5"/>
+  <polygon points="450,510 444,500 456,500" fill="#c8b89a"/>
+
+  <!-- ─────────────────── LAYER 5: BUILD & DEPLOY ─────────────────── -->
+  <rect x="40" y="512" width="820" height="72" rx="7"
+    fill="#fffdf8" stroke="rgba(130,100,55,0.18)" stroke-width="1"/>
+  <rect x="40" y="512" width="5" height="72" rx="3" fill="#7209b7"/>
+
+  <text x="66" y="530" font-size="9.5" font-weight="700" fill="#7209b7"
+    letter-spacing="0.14em">BUILD &amp; DEPLOY</text>
+
+  <text x="66" y="550" font-size="12.5" fill="#2d2410">
+    Vite 8
+    <tspan fill="rgba(130,100,55,0.5)">  →  </tspan>
+    GitHub Pages
+    <tspan fill="rgba(130,100,55,0.5)">  ·  </tspan>
+    world-atlas + topojson-client  ·  Base path: /world-cup-visualisation/
+  </text>
+  <text x="66" y="571" font-size="11" fill="#9a8870">
+    Zero runtime dependencies beyond React + D3-geo  ·  Static site, no backend
+  </text>
+
+  <!-- Footer rule -->
+  <line x1="40" y1="601" x2="860" y2="601" stroke="rgba(130,100,55,0.12)" stroke-width="1"/>
+  <text x="450" y="613" text-anchor="middle" font-size="9" fill="#c8b09a" letter-spacing="0.06em">
+    github.com/andypetes94/world-cup-visualisation
+  </text>
+
+</svg>
